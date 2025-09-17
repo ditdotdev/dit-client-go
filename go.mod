@@ -1,4 +1,4 @@
-module github.com/titan-data/titan-client-go
+module github.com/datadatdat/titan-client-go
 
 require (
 	github.com/antihax/optional v1.0.0
