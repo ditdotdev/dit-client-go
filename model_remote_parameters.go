@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // RemoteParameters struct for RemoteParameters
 type RemoteParameters struct {
 	// Remote type

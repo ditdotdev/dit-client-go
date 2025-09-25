@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // ProgressEntry struct for ProgressEntry
 type ProgressEntry struct {
 	// Sequenced entry identifier

@@ -11,12 +11,12 @@ package titanclient
 
 import (
 	_context "context"
+	"github.com/antihax/optional"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"strings"
 	"reflect"
-	"github.com/antihax/optional"
+	"strings"
 )
 
 // Linger please
@@ -29,9 +29,9 @@ type CommitsApiService service
 
 /*
 CheckoutCommit Checkout the given commit
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param commitId Commit identifier
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param commitId Commit identifier
 */
 func (a *CommitsApiService) CheckoutCommit(ctx _context.Context, repositoryName string, commitId string) (*_nethttp.Response, error) {
 	var (
@@ -44,9 +44,9 @@ func (a *CommitsApiService) CheckoutCommit(ctx _context.Context, repositoryName 
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}/checkout"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -101,13 +101,13 @@ func (a *CommitsApiService) CheckoutCommit(ctx _context.Context, repositoryName 
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -116,9 +116,10 @@ func (a *CommitsApiService) CheckoutCommit(ctx _context.Context, repositoryName 
 
 /*
 CreateCommit Create new commit
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param commit New commit to create
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param commit New commit to create
+
 @return Commit
 */
 func (a *CommitsApiService) CreateCommit(ctx _context.Context, repositoryName string, commit Commit) (Commit, *_nethttp.Response, error) {
@@ -133,7 +134,7 @@ func (a *CommitsApiService) CreateCommit(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -210,13 +211,13 @@ func (a *CommitsApiService) CreateCommit(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -234,9 +235,9 @@ func (a *CommitsApiService) CreateCommit(ctx _context.Context, repositoryName st
 
 /*
 DeleteCommit Discard a past commit
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param commitId Commit identifier
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param commitId Commit identifier
 */
 func (a *CommitsApiService) DeleteCommit(ctx _context.Context, repositoryName string, commitId string) (*_nethttp.Response, error) {
 	var (
@@ -249,9 +250,9 @@ func (a *CommitsApiService) DeleteCommit(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -306,13 +307,13 @@ func (a *CommitsApiService) DeleteCommit(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -321,9 +322,10 @@ func (a *CommitsApiService) DeleteCommit(ctx _context.Context, repositoryName st
 
 /*
 GetCommit Get information for a specific commit
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param commitId Commit identifier
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param commitId Commit identifier
+
 @return Commit
 */
 func (a *CommitsApiService) GetCommit(ctx _context.Context, repositoryName string, commitId string) (Commit, *_nethttp.Response, error) {
@@ -338,9 +340,9 @@ func (a *CommitsApiService) GetCommit(ctx _context.Context, repositoryName strin
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -405,13 +407,13 @@ func (a *CommitsApiService) GetCommit(ctx _context.Context, repositoryName strin
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -429,9 +431,10 @@ func (a *CommitsApiService) GetCommit(ctx _context.Context, repositoryName strin
 
 /*
 GetCommitStatus Get commit status
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param commitId Commit identifier
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param commitId Commit identifier
+
 @return CommitStatus
 */
 func (a *CommitsApiService) GetCommitStatus(ctx _context.Context, repositoryName string, commitId string) (CommitStatus, *_nethttp.Response, error) {
@@ -446,9 +449,9 @@ func (a *CommitsApiService) GetCommitStatus(ctx _context.Context, repositoryName
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -513,13 +516,13 @@ func (a *CommitsApiService) GetCommitStatus(ctx _context.Context, repositoryName
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -537,15 +540,16 @@ func (a *CommitsApiService) GetCommitStatus(ctx _context.Context, repositoryName
 
 // ListCommitsOpts Optional parameters for the method 'ListCommits'
 type ListCommitsOpts struct {
-    Tag optional.Interface
+	Tag optional.Interface
 }
 
 /*
 ListCommits Get commit history for a repository
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param optional nil or *ListCommitsOpts - Optional Parameters:
- * @param "Tag" (optional.Interface of []string) -  Tags (name or name=value) to search for
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param optional nil or *ListCommitsOpts - Optional Parameters:
+  - @param "Tag" (optional.Interface of []string) -  Tags (name or name=value) to search for
+
 @return []Commit
 */
 func (a *CommitsApiService) ListCommits(ctx _context.Context, repositoryName string, localVarOptionals *ListCommitsOpts) ([]Commit, *_nethttp.Response, error) {
@@ -560,14 +564,14 @@ func (a *CommitsApiService) ListCommits(ctx _context.Context, repositoryName str
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
 	if localVarOptionals != nil && localVarOptionals.Tag.IsSet() {
-		t:=localVarOptionals.Tag.Value()
+		t := localVarOptionals.Tag.Value()
 		if reflect.TypeOf(t).Kind() == reflect.Slice {
 			s := reflect.ValueOf(t)
 			for i := 0; i < s.Len(); i++ {
@@ -636,13 +640,13 @@ func (a *CommitsApiService) ListCommits(ctx _context.Context, repositoryName str
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -660,10 +664,11 @@ func (a *CommitsApiService) ListCommits(ctx _context.Context, repositoryName str
 
 /*
 UpdateCommit Update tags for a previous commit
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param commitId Commit identifier
- * @param commit Commit contents to update
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param commitId Commit identifier
+  - @param commit Commit contents to update
+
 @return Commit
 */
 func (a *CommitsApiService) UpdateCommit(ctx _context.Context, repositoryName string, commitId string, commit Commit) (Commit, *_nethttp.Response, error) {
@@ -678,9 +683,9 @@ func (a *CommitsApiService) UpdateCommit(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -747,13 +752,13 @@ func (a *CommitsApiService) UpdateCommit(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

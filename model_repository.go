@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // Repository struct for Repository
 type Repository struct {
 	// Repository name

@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // ApiError struct for ApiError
 type ApiError struct {
 	// Unique code for the error
