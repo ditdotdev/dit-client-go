@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // VolumeStatus struct for VolumeStatus
 type VolumeStatus struct {
 	// Volume name

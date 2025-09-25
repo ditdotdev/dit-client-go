@@ -11,11 +11,11 @@ package titanclient
 
 import (
 	_context "context"
+	"github.com/antihax/optional"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,8 +28,8 @@ type OperationsApiService service
 
 /*
 AbortOperation Abort operation
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param operationId Operation identifier
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param operationId Operation identifier
 */
 func (a *OperationsApiService) AbortOperation(ctx _context.Context, operationId string) (*_nethttp.Response, error) {
 	var (
@@ -42,7 +42,7 @@ func (a *OperationsApiService) AbortOperation(ctx _context.Context, operationId 
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/operations/{operationId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -97,13 +97,13 @@ func (a *OperationsApiService) AbortOperation(ctx _context.Context, operationId 
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -112,8 +112,9 @@ func (a *OperationsApiService) AbortOperation(ctx _context.Context, operationId 
 
 /*
 GetOperation Get operation
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param operationId Operation identifier
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param operationId Operation identifier
+
 @return Operation
 */
 func (a *OperationsApiService) GetOperation(ctx _context.Context, operationId string) (Operation, *_nethttp.Response, error) {
@@ -128,7 +129,7 @@ func (a *OperationsApiService) GetOperation(ctx _context.Context, operationId st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/operations/{operationId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -193,13 +194,13 @@ func (a *OperationsApiService) GetOperation(ctx _context.Context, operationId st
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -217,15 +218,16 @@ func (a *OperationsApiService) GetOperation(ctx _context.Context, operationId st
 
 // GetOperationProgressOpts Optional parameters for the method 'GetOperationProgress'
 type GetOperationProgressOpts struct {
-    LastId optional.Int32
+	LastId optional.Int32
 }
 
 /*
 GetOperationProgress Get operation progress
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param operationId Operation identifier
- * @param optional nil or *GetOperationProgressOpts - Optional Parameters:
- * @param "LastId" (optional.Int32) - 
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param operationId Operation identifier
+  - @param optional nil or *GetOperationProgressOpts - Optional Parameters:
+  - @param "LastId" (optional.Int32) -
+
 @return []ProgressEntry
 */
 func (a *OperationsApiService) GetOperationProgress(ctx _context.Context, operationId string, localVarOptionals *GetOperationProgressOpts) ([]ProgressEntry, *_nethttp.Response, error) {
@@ -240,7 +242,7 @@ func (a *OperationsApiService) GetOperationProgress(ctx _context.Context, operat
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/operations/{operationId}/progress"
-	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -308,13 +310,13 @@ func (a *OperationsApiService) GetOperationProgress(ctx _context.Context, operat
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -332,14 +334,15 @@ func (a *OperationsApiService) GetOperationProgress(ctx _context.Context, operat
 
 // ListOperationsOpts Optional parameters for the method 'ListOperations'
 type ListOperationsOpts struct {
-    Repository optional.String
+	Repository optional.String
 }
 
 /*
 ListOperations List operations
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *ListOperationsOpts - Optional Parameters:
- * @param "Repository" (optional.String) -  Limit to the given repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param optional nil or *ListOperationsOpts - Optional Parameters:
+  - @param "Repository" (optional.String) -  Limit to the given repository
+
 @return []Operation
 */
 func (a *OperationsApiService) ListOperations(ctx _context.Context, localVarOptionals *ListOperationsOpts) ([]Operation, *_nethttp.Response, error) {
@@ -410,13 +413,13 @@ func (a *OperationsApiService) ListOperations(ctx _context.Context, localVarOpti
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -434,18 +437,19 @@ func (a *OperationsApiService) ListOperations(ctx _context.Context, localVarOpti
 
 // PullOpts Optional parameters for the method 'Pull'
 type PullOpts struct {
-    MetadataOnly optional.Bool
+	MetadataOnly optional.Bool
 }
 
 /*
 Pull Start a pull operation
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
- * @param commitId Commit identifier
- * @param remoteParameters Provider specific parameters
- * @param optional nil or *PullOpts - Optional Parameters:
- * @param "MetadataOnly" (optional.Bool) -  Transfer only tag metadata
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
+  - @param commitId Commit identifier
+  - @param remoteParameters Provider specific parameters
+  - @param optional nil or *PullOpts - Optional Parameters:
+  - @param "MetadataOnly" (optional.Bool) -  Transfer only tag metadata
+
 @return Operation
 */
 func (a *OperationsApiService) Pull(ctx _context.Context, repositoryName string, remoteName string, commitId string, remoteParameters RemoteParameters, localVarOptionals *PullOpts) (Operation, *_nethttp.Response, error) {
@@ -460,11 +464,11 @@ func (a *OperationsApiService) Pull(ctx _context.Context, repositoryName string,
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId}/pull"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -544,13 +548,13 @@ func (a *OperationsApiService) Pull(ctx _context.Context, repositoryName string,
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -568,18 +572,19 @@ func (a *OperationsApiService) Pull(ctx _context.Context, repositoryName string,
 
 // PushOpts Optional parameters for the method 'Push'
 type PushOpts struct {
-    MetadataOnly optional.Bool
+	MetadataOnly optional.Bool
 }
 
 /*
 Push Start a push operation
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
- * @param commitId Commit identifier
- * @param remoteParameters Provider specific parameters
- * @param optional nil or *PushOpts - Optional Parameters:
- * @param "MetadataOnly" (optional.Bool) -  Transfer only tag metadata
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
+  - @param commitId Commit identifier
+  - @param remoteParameters Provider specific parameters
+  - @param optional nil or *PushOpts - Optional Parameters:
+  - @param "MetadataOnly" (optional.Bool) -  Transfer only tag metadata
+
 @return Operation
 */
 func (a *OperationsApiService) Push(ctx _context.Context, repositoryName string, remoteName string, commitId string, remoteParameters RemoteParameters, localVarOptionals *PushOpts) (Operation, *_nethttp.Response, error) {
@@ -594,11 +599,11 @@ func (a *OperationsApiService) Push(ctx _context.Context, repositoryName string,
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId}/push"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -678,13 +683,13 @@ func (a *OperationsApiService) Push(ctx _context.Context, repositoryName string,
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

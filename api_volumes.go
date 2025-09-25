@@ -27,9 +27,9 @@ type VolumesApiService service
 
 /*
 ActivateVolume Activate a volume for use by a repository (e.g. mount)
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param volumeName Name of the volume
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param volumeName Name of the volume
 */
 func (a *VolumesApiService) ActivateVolume(ctx _context.Context, repositoryName string, volumeName string) (*_nethttp.Response, error) {
 	var (
@@ -42,9 +42,9 @@ func (a *VolumesApiService) ActivateVolume(ctx _context.Context, repositoryName 
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}/activate"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -99,13 +99,13 @@ func (a *VolumesApiService) ActivateVolume(ctx _context.Context, repositoryName 
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -114,9 +114,10 @@ func (a *VolumesApiService) ActivateVolume(ctx _context.Context, repositoryName 
 
 /*
 CreateVolume Create new volume
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param volume New volume to create
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param volume New volume to create
+
 @return Volume
 */
 func (a *VolumesApiService) CreateVolume(ctx _context.Context, repositoryName string, volume Volume) (Volume, *_nethttp.Response, error) {
@@ -131,7 +132,7 @@ func (a *VolumesApiService) CreateVolume(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -208,13 +209,13 @@ func (a *VolumesApiService) CreateVolume(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -232,9 +233,9 @@ func (a *VolumesApiService) CreateVolume(ctx _context.Context, repositoryName st
 
 /*
 DeactivateVolume Deactivate a volume prior to its deletion (e.g. unmount)
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param volumeName Name of the volume
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param volumeName Name of the volume
 */
 func (a *VolumesApiService) DeactivateVolume(ctx _context.Context, repositoryName string, volumeName string) (*_nethttp.Response, error) {
 	var (
@@ -247,9 +248,9 @@ func (a *VolumesApiService) DeactivateVolume(ctx _context.Context, repositoryNam
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}/deactivate"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -304,13 +305,13 @@ func (a *VolumesApiService) DeactivateVolume(ctx _context.Context, repositoryNam
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -319,9 +320,9 @@ func (a *VolumesApiService) DeactivateVolume(ctx _context.Context, repositoryNam
 
 /*
 DeleteVolume Remove a volume
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param volumeName Name of the volume
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param volumeName Name of the volume
 */
 func (a *VolumesApiService) DeleteVolume(ctx _context.Context, repositoryName string, volumeName string) (*_nethttp.Response, error) {
 	var (
@@ -334,9 +335,9 @@ func (a *VolumesApiService) DeleteVolume(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -391,13 +392,13 @@ func (a *VolumesApiService) DeleteVolume(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -406,9 +407,10 @@ func (a *VolumesApiService) DeleteVolume(ctx _context.Context, repositoryName st
 
 /*
 GetVolume Get info for a volume
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param volumeName Name of the volume
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param volumeName Name of the volume
+
 @return Volume
 */
 func (a *VolumesApiService) GetVolume(ctx _context.Context, repositoryName string, volumeName string) (Volume, *_nethttp.Response, error) {
@@ -423,9 +425,9 @@ func (a *VolumesApiService) GetVolume(ctx _context.Context, repositoryName strin
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -490,13 +492,13 @@ func (a *VolumesApiService) GetVolume(ctx _context.Context, repositoryName strin
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -514,9 +516,10 @@ func (a *VolumesApiService) GetVolume(ctx _context.Context, repositoryName strin
 
 /*
 GetVolumeStatus Get status of a volume
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param volumeName Name of the volume
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param volumeName Name of the volume
+
 @return VolumeStatus
 */
 func (a *VolumesApiService) GetVolumeStatus(ctx _context.Context, repositoryName string, volumeName string) (VolumeStatus, *_nethttp.Response, error) {
@@ -531,9 +534,9 @@ func (a *VolumesApiService) GetVolumeStatus(ctx _context.Context, repositoryName
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -598,13 +601,13 @@ func (a *VolumesApiService) GetVolumeStatus(ctx _context.Context, repositoryName
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -622,8 +625,9 @@ func (a *VolumesApiService) GetVolumeStatus(ctx _context.Context, repositoryName
 
 /*
 ListVolumes List volumes
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+
 @return []Volume
 */
 func (a *VolumesApiService) ListVolumes(ctx _context.Context, repositoryName string) ([]Volume, *_nethttp.Response, error) {
@@ -638,7 +642,7 @@ func (a *VolumesApiService) ListVolumes(ctx _context.Context, repositoryName str
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -703,13 +707,13 @@ func (a *VolumesApiService) ListVolumes(ctx _context.Context, repositoryName str
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

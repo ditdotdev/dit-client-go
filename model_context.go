@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // Context struct for Context
 type Context struct {
 	// Provider type

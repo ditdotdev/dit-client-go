@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // RepositoryStatus struct for RepositoryStatus
 type RepositoryStatus struct {
 	// The latest commit ID for the repository
