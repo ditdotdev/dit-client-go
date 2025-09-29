@@ -12,7 +12,7 @@ package titanclient
 import (
 	_context "context"
 	"github.com/antihax/optional"
-	_ioutil "io/ioutil"
+	"io"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
@@ -42,7 +42,7 @@ func (a *OperationsApiService) AbortOperation(ctx _context.Context, operationId 
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/operations/{operationId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -76,8 +76,8 @@ func (a *OperationsApiService) AbortOperation(ctx _context.Context, operationId 
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -129,7 +129,7 @@ func (a *OperationsApiService) GetOperation(ctx _context.Context, operationId st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/operations/{operationId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -163,8 +163,8 @@ func (a *OperationsApiService) GetOperation(ctx _context.Context, operationId st
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -242,7 +242,7 @@ func (a *OperationsApiService) GetOperationProgress(ctx _context.Context, operat
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/operations/{operationId}/progress"
-	localVarPath = strings.Replace(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"operationId"+"}", _neturl.QueryEscape(parameterToString(operationId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -279,8 +279,8 @@ func (a *OperationsApiService) GetOperationProgress(ctx _context.Context, operat
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -392,8 +392,8 @@ func (a *OperationsApiService) ListOperations(ctx _context.Context, localVarOpti
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -464,11 +464,11 @@ func (a *OperationsApiService) Pull(ctx _context.Context, repositoryName string,
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId}/pull"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -507,8 +507,8 @@ func (a *OperationsApiService) Pull(ctx _context.Context, repositoryName string,
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -599,11 +599,11 @@ func (a *OperationsApiService) Push(ctx _context.Context, repositoryName string,
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId}/push"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -642,8 +642,8 @@ func (a *OperationsApiService) Push(ctx _context.Context, repositoryName string,
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
