@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // Remote struct for Remote
 type Remote struct {
 	// Remote type
