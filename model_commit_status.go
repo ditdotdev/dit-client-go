@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // CommitStatus struct for CommitStatus
 type CommitStatus struct {
 	// Logical size of data referenced by commit

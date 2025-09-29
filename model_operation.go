@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // Operation struct for Operation
 type Operation struct {
 	// Unique identifier for the operation

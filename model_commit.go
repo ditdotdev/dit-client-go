@@ -8,6 +8,7 @@
  */
 
 package titanclient
+
 // Commit struct for Commit
 type Commit struct {
 	// Commit identifier
