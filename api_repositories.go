@@ -11,7 +11,7 @@ package titanclient
 
 import (
 	_context "context"
-	_ioutil "io/ioutil"
+	"io"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
@@ -78,8 +78,8 @@ func (a *RepositoriesApiService) CreateRepository(ctx _context.Context, reposito
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -147,7 +147,7 @@ func (a *RepositoriesApiService) DeleteRepository(ctx _context.Context, reposito
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -181,8 +181,8 @@ func (a *RepositoriesApiService) DeleteRepository(ctx _context.Context, reposito
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -234,7 +234,7 @@ func (a *RepositoriesApiService) GetRepository(ctx _context.Context, repositoryN
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -268,8 +268,8 @@ func (a *RepositoriesApiService) GetRepository(ctx _context.Context, repositoryN
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -340,7 +340,7 @@ func (a *RepositoriesApiService) GetRepositoryStatus(ctx _context.Context, repos
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -374,8 +374,8 @@ func (a *RepositoriesApiService) GetRepositoryStatus(ctx _context.Context, repos
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -477,8 +477,8 @@ func (a *RepositoriesApiService) ListRepositories(ctx _context.Context) ([]Repos
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -540,7 +540,7 @@ func (a *RepositoriesApiService) UpdateRepository(ctx _context.Context, reposito
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -576,8 +576,8 @@ func (a *RepositoriesApiService) UpdateRepository(ctx _context.Context, reposito
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}

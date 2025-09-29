@@ -101,7 +101,7 @@ func (c *Configuration) AddDefaultHeader(key string, value string) {
 // ServerUrl returns URL based on server settings
 func (c *Configuration) ServerUrl(index int, variables map[string]string) (string, error) {
 	if index < 0 || len(c.Servers) <= index {
-		return "", fmt.Errorf("Index %v out of range %v", index, len(c.Servers)-1)
+		return "", fmt.Errorf("index %v out of range %v", index, len(c.Servers)-1)
 	}
 	server := c.Servers[index]
 	url := server.Url
@@ -116,11 +116,11 @@ func (c *Configuration) ServerUrl(index int, variables map[string]string) (strin
 				}
 			}
 			if !found {
-				return "", fmt.Errorf("The variable %s in the server URL has invalid value %v. Must be %v", name, value, variable.EnumValues)
+				return "", fmt.Errorf("the variable %s in the server URL has invalid value %v. Must be %v", name, value, variable.EnumValues)
 			}
-			url = strings.Replace(url, "{"+name+"}", value, -1)
+			url = strings.ReplaceAll(url, "{"+name+"}", value)
 		} else {
-			url = strings.Replace(url, "{"+name+"}", variable.DefaultValue, -1)
+			url = strings.ReplaceAll(url, "{"+name+"}", variable.DefaultValue)
 		}
 	}
 	return url, nil

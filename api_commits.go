@@ -12,7 +12,7 @@ package titanclient
 import (
 	_context "context"
 	"github.com/antihax/optional"
-	_ioutil "io/ioutil"
+	"io"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"reflect"
@@ -44,9 +44,9 @@ func (a *CommitsApiService) CheckoutCommit(ctx _context.Context, repositoryName 
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}/checkout"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -80,8 +80,8 @@ func (a *CommitsApiService) CheckoutCommit(ctx _context.Context, repositoryName 
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -134,7 +134,7 @@ func (a *CommitsApiService) CreateCommit(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -170,8 +170,8 @@ func (a *CommitsApiService) CreateCommit(ctx _context.Context, repositoryName st
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -250,9 +250,9 @@ func (a *CommitsApiService) DeleteCommit(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -286,8 +286,8 @@ func (a *CommitsApiService) DeleteCommit(ctx _context.Context, repositoryName st
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -340,9 +340,9 @@ func (a *CommitsApiService) GetCommit(ctx _context.Context, repositoryName strin
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -376,8 +376,8 @@ func (a *CommitsApiService) GetCommit(ctx _context.Context, repositoryName strin
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -449,9 +449,9 @@ func (a *CommitsApiService) GetCommitStatus(ctx _context.Context, repositoryName
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -485,8 +485,8 @@ func (a *CommitsApiService) GetCommitStatus(ctx _context.Context, repositoryName
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -564,7 +564,7 @@ func (a *CommitsApiService) ListCommits(ctx _context.Context, repositoryName str
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -609,8 +609,8 @@ func (a *CommitsApiService) ListCommits(ctx _context.Context, repositoryName str
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -683,9 +683,9 @@ func (a *CommitsApiService) UpdateCommit(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -721,8 +721,8 @@ func (a *CommitsApiService) UpdateCommit(ctx _context.Context, repositoryName st
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}

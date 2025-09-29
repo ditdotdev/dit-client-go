@@ -11,7 +11,7 @@ package titanclient
 
 import (
 	_context "context"
-	_ioutil "io/ioutil"
+	"io"
 	_nethttp "net/http"
 	_neturl "net/url"
 	"strings"
@@ -42,9 +42,9 @@ func (a *VolumesApiService) ActivateVolume(ctx _context.Context, repositoryName 
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}/activate"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -78,8 +78,8 @@ func (a *VolumesApiService) ActivateVolume(ctx _context.Context, repositoryName 
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -132,7 +132,7 @@ func (a *VolumesApiService) CreateVolume(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -168,8 +168,8 @@ func (a *VolumesApiService) CreateVolume(ctx _context.Context, repositoryName st
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -248,9 +248,9 @@ func (a *VolumesApiService) DeactivateVolume(ctx _context.Context, repositoryNam
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}/deactivate"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -284,8 +284,8 @@ func (a *VolumesApiService) DeactivateVolume(ctx _context.Context, repositoryNam
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -335,9 +335,9 @@ func (a *VolumesApiService) DeleteVolume(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -371,8 +371,8 @@ func (a *VolumesApiService) DeleteVolume(ctx _context.Context, repositoryName st
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
@@ -425,9 +425,9 @@ func (a *VolumesApiService) GetVolume(ctx _context.Context, repositoryName strin
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -461,8 +461,8 @@ func (a *VolumesApiService) GetVolume(ctx _context.Context, repositoryName strin
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -534,9 +534,9 @@ func (a *VolumesApiService) GetVolumeStatus(ctx _context.Context, repositoryName
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes/{volumeName}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
-	localVarPath = strings.Replace(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"volumeName"+"}", _neturl.QueryEscape(parameterToString(volumeName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -570,8 +570,8 @@ func (a *VolumesApiService) GetVolumeStatus(ctx _context.Context, repositoryName
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
@@ -642,7 +642,7 @@ func (a *VolumesApiService) ListVolumes(ctx _context.Context, repositoryName str
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/volumes"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
+	localVarPath = strings.ReplaceAll(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")))
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -676,8 +676,8 @@ func (a *VolumesApiService) ListVolumes(ctx _context.Context, repositoryName str
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
+	localVarBody, err := io.ReadAll(localVarHTTPResponse.Body)
+	_ = localVarHTTPResponse.Body.Close()
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
