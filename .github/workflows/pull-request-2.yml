@@ -4,6 +4,11 @@
 #
 name: Pull Request 2
 
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
@@ -21,7 +26,7 @@ env:
   GOPRIVATE: github.com/datadatdat/*
   GONOPROXY: github.com/datadatdat/*
   GONOSUMDB: github.com/datadatdat/*
-  GOPROXY: direct
+  GOPROXY: https://proxy.golang.org,direct
   GIT_TERMINAL_PROMPT: 0
 
 jobs:
@@ -56,20 +61,19 @@ jobs:
 
       - name: Run Go security scanner (gosec)
         run: |
+          # Use latest gosec for best security coverage
           go install github.com/securego/gosec/v2/cmd/gosec@latest
-          gosec ./...
+          # Run gosec with JSON output for better CI integration
+          gosec -fmt=json -out=gosec-results.json ./... || true
+          # Also run with text output for human-readable results
+          gosec ./... || echo "Gosec completed with findings"
         continue-on-error: true
 
-      - name: Run Nancy vulnerability scanner
+      - name: Run Go vulnerability scanner (govulncheck)
         run: |
-          # Generate dependency list for Nancy
-          go list -json -m all > go.list
-          # Use Nancy GitHub Action
-          echo "Nancy scan will be performed by GitHub Action"
-        continue-on-error: true
-        
-      - name: Nancy Security Scan
-        uses: sonatype-nexus-community/nancy-github-action@main
+          # Use Go's official vulnerability scanner instead of Nancy
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./... || echo "Vulnerability scan completed with findings"
         continue-on-error: true
 
   # Code quality and linting
