@@ -26,7 +26,7 @@ env:
   GOPRIVATE: github.com/datadatdat/*
   GONOPROXY: github.com/datadatdat/*
   GONOSUMDB: github.com/datadatdat/*
-  GOPROXY: direct
+  GOPROXY: https://proxy.golang.org,direct
   GIT_TERMINAL_PROMPT: 0
 
 jobs:
@@ -61,14 +61,12 @@ jobs:
 
       - name: Run Go security scanner (gosec)
         run: |
-          # Clear module cache to avoid checksum issues
-          go clean -modcache
-          # Install specific version of gosec instead of latest
-          go install github.com/securego/gosec/v2/cmd/gosec@v2.21.2
-          # Run gosec with basic configuration
+          # Use latest gosec for best security coverage
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+          # Run gosec with JSON output for better CI integration
           gosec -fmt=json -out=gosec-results.json ./... || true
-          # Also run with text output for visibility
-          gosec ./... || echo "Gosec completed with warnings"
+          # Also run with text output for human-readable results
+          gosec ./... || echo "Gosec completed with findings"
         continue-on-error: true
 
       - name: Run Go vulnerability scanner (govulncheck)
