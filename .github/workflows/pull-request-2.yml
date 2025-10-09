@@ -265,13 +265,15 @@ jobs:
           if go test -list . | grep -q "Benchmark"; then
             echo "Running benchmarks..."
             go test -v -bench=. -benchmem ./... | tee benchmark.txt
+            echo "BENCHMARKS_FOUND=true" >> $GITHUB_ENV
           else
             echo "No benchmarks found, skipping..."
+            echo "BENCHMARKS_FOUND=false" >> $GITHUB_ENV
           fi
         shell: bash
 
       - name: Upload benchmark results
-        if: success()
+        if: success() && env.BENCHMARKS_FOUND == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
