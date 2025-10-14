@@ -348,11 +348,11 @@ GetRemoteCommit Get a remote commit
   - @param repositoryName Name of the repository
   - @param remoteName Name of the remote
   - @param commitId Commit identifier
-  - @param DatadatdatRemoteParameters Remote-specific parameters
+  - @param datadatdatRemoteParameters Remote-specific parameters
 
 @return Commit
 */
-func (a *RemotesApiService) GetRemoteCommit(ctx context.Context, repositoryName string, remoteName string, commitId string, datadatdatRemoteParameters RemoteParameters) (Commit, *http.Response, error) {
+func (a *RemotesApiService) GetRemoteCommit(ctx _context.Context, repositoryName string, remoteName string, commitId string, datadatdatRemoteParameters RemoteParameters) (Commit, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -392,7 +392,7 @@ func (a *RemotesApiService) GetRemoteCommit(ctx context.Context, repositoryName 
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	var err error
-	localVarHeaderParams["Datadatdat-remote-parameters"], err = parameterToJson(DatadatdatRemoteParameters)
+	localVarHeaderParams["Datadatdat-remote-parameters"], err = parameterToJson(datadatdatRemoteParameters)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -479,13 +479,13 @@ ListRemoteCommits List remote commits
   - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
   - @param repositoryName Name of the repository
   - @param remoteName Name of the remote
-  - @param DatadatdatRemoteParameters Remote-specific parameters
+  - @param datadatdatRemoteParameters Remote-specific parameters
   - @param optional nil or *ListRemoteCommitsOpts - Optional Parameters:
   - @param "Tag" (optional.Interface of []string) -  Tags (name or name=value) to search for
 
 @return []Commit
 */
-func (a *RemotesApiService) ListRemoteCommits(ctx context.Context, repositoryName string, remoteName string, datadatdatRemoteParameters RemoteParameters, localVarOptionals *ListRemoteCommitsOpts) ([]Commit, *http.Response, error) {
+func (a *RemotesApiService) ListRemoteCommits(ctx _context.Context, repositoryName string, remoteName string, datadatdatRemoteParameters RemoteParameters, localVarOptionals *ListRemoteCommitsOpts) ([]Commit, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
@@ -534,7 +534,7 @@ func (a *RemotesApiService) ListRemoteCommits(ctx context.Context, repositoryNam
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	var err error
-	localVarHeaderParams["Datadatdat-remote-parameters"], err = parameterToJson(DatadatdatRemoteParameters)
+	localVarHeaderParams["Datadatdat-remote-parameters"], err = parameterToJson(datadatdatRemoteParameters)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
