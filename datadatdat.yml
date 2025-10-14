@@ -1,7 +1,7 @@
 openapi: 3.0.2
 info:
-  title: Titan API
-  description: API used by the Titan CLI
+  title: Datadatdat API
+  description: API used by the Datadatdat CLI
   version: 0.3.0
 servers:
   - url: http://localhost:5001
@@ -1009,7 +1009,7 @@ components:
       schema:
         type: string
     remoteParameters:
-      name: titan-remote-parameters
+      name: Datadatdat-remote-parameters
       description: Remote-specific parameters
       required: true
       in: header

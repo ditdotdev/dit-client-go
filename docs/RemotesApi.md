@@ -115,7 +115,7 @@ No authorization required
 
 ## GetRemoteCommit
 
-> Commit GetRemoteCommit(ctx, repositoryName, remoteName, commitId, titanRemoteParameters)
+> Commit GetRemoteCommit(ctx, repositoryName, remoteName, commitId, datadatdatRemoteParameters)
 
 Get a remote commit
 
@@ -128,7 +128,7 @@ Name | Type | Description  | Notes
 **repositoryName** | **string**| Name of the repository | 
 **remoteName** | **string**| Name of the remote | 
 **commitId** | **string**| Commit identifier | 
-**titanRemoteParameters** | [**RemoteParameters**](.md)| Remote-specific parameters | 
+**datadatdatRemoteParameters** | [**RemoteParameters**](.md)| Remote-specific parameters | 
 
 ### Return type
 
@@ -150,7 +150,7 @@ No authorization required
 
 ## ListRemoteCommits
 
-> []Commit ListRemoteCommits(ctx, repositoryName, remoteName, titanRemoteParameters, optional)
+> []Commit ListRemoteCommits(ctx, repositoryName, remoteName, datadatdatRemoteParameters, optional)
 
 List remote commits
 
@@ -162,7 +162,7 @@ Name | Type | Description  | Notes
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
 **repositoryName** | **string**| Name of the repository | 
 **remoteName** | **string**| Name of the remote | 
-**titanRemoteParameters** | [**RemoteParameters**](.md)| Remote-specific parameters | 
+**datadatdatRemoteParameters** | [**RemoteParameters**](.md)| Remote-specific parameters | 
  **optional** | ***ListRemoteCommitsOpts** | optional parameters | nil if no parameters
 
 ### Optional Parameters
