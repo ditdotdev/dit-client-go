@@ -1,4 +1,4 @@
-# golangci-lint configuration for titan-client-go
+# golangci-lint configuration for Datadatdat-client-go
 # Configuration compatible with golangci-lint v2.5.0
 version: "2"
 

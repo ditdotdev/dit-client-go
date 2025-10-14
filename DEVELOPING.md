@@ -1,15 +1,15 @@
 # Project Development
 
 For general information about contributing changes, see the
-[Contributor Guidelines](https://github.com/titan-data/.github/blob/master/CONTRIBUTING.md).
+[Contributor Guidelines](https://github.com/datadatdat/.github/blob/master/CONTRIBUTING.md).
 
 ## How it Works
 
-The project iis entirely generated via the [OpenAPI Generator](https://openapi-generator.tech/). The resulting
+The project is entirely generated via the [OpenAPI Generator](https://openapi-generator.tech/). The resulting
 files are committed to the repository so they can be easily imported via go modules. To updated the generated
 code, you will need to:
 
-1. Update `titan.yml` with the specification from the `titan-server` repository.
+1. Update `datadatdat.yml` with the specification from the `datadatdat-server` repository.
 2. Run `generate`. This requires docker, and likely work on windows systems. If necessary, you can run the openapi
    generator by hand, but you will be responsible for ensuring the right options are specified.
 3. If the new API spec contains renamed or deleted objects, you will need to manually delete those objects.
