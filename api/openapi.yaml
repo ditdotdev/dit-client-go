@@ -10,7 +10,7 @@ paths:
     get:
       operationId: getContext
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -23,7 +23,7 @@ paths:
     get:
       operationId: listRepositories
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -50,13 +50,13 @@ paths:
         description: New repository to create
         required: true
       responses:
-        201:
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/repository'
           description: Newly created repository
-        401:
+        "401":
           content:
             application/json:
               schema:
@@ -84,9 +84,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Repository deleted
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -113,13 +113,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/repository'
           description: Repository info
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -153,19 +153,19 @@ paths:
         description: New repository
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/repository'
           description: Updated repository
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -193,13 +193,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/repositoryStatus'
           description: Repository status
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -227,7 +227,7 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -235,7 +235,7 @@ paths:
                   $ref: '#/components/schemas/volume'
                 type: array
           description: List of volumes
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -269,19 +269,19 @@ paths:
         description: New volume to create
         required: true
       responses:
-        201:
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/volume'
           description: Newly created volume
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -317,9 +317,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Volume deleted
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -354,13 +354,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/volume'
           description: Volume info
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -396,9 +396,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Activated repository
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -434,9 +434,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Deactivated repository
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -472,13 +472,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/volumeStatus'
           description: Volume status
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -516,7 +516,7 @@ paths:
           type: array
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -524,7 +524,7 @@ paths:
                   $ref: '#/components/schemas/commit'
                 type: array
           description: List of commits
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -558,19 +558,19 @@ paths:
         description: New commit to create
         required: true
       responses:
-        201:
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/commit'
           description: Newly created commit
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -606,9 +606,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Commit discarded
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -643,13 +643,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/commit'
           description: Commit information
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -691,13 +691,13 @@ paths:
         description: Commit contents to update
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/commit'
           description: Updated commit
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -733,13 +733,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/commitStatus'
           description: Commit status
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -775,9 +775,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Commit checked out
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -805,7 +805,7 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -813,7 +813,7 @@ paths:
                   $ref: '#/components/schemas/remote'
                 type: array
           description: List of remotes
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -847,19 +847,19 @@ paths:
         description: Remote to create
         required: true
       responses:
-        201:
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/remote'
           description: Newly created remote
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -895,9 +895,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Remote deleted
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -932,13 +932,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/remote'
           description: Remote information
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -980,19 +980,19 @@ paths:
         description: Remote information to update
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/remote'
           description: Remote information
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1046,7 +1046,7 @@ paths:
           type: array
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -1054,13 +1054,13 @@ paths:
                   $ref: '#/components/schemas/commit'
                 type: array
           description: List of commits
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1112,19 +1112,19 @@ paths:
           $ref: '#/components/schemas/remoteParameters'
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/commit'
           description: Remote commit
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1152,7 +1152,7 @@ paths:
           type: string
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -1182,9 +1182,9 @@ paths:
           type: string
         style: simple
       responses:
-        204:
+        "204":
           description: Operation aborted
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1211,13 +1211,13 @@ paths:
           type: string
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/operation'
           description: Operation information
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1253,7 +1253,7 @@ paths:
           type: integer
         style: form
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -1261,7 +1261,7 @@ paths:
                   $ref: '#/components/schemas/progressEntry'
                 type: array
           description: Operation progress information
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1320,19 +1320,19 @@ paths:
         description: Provider specific parameters
         required: true
       responses:
-        201:
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/operation'
           description: New operation
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:
@@ -1391,19 +1391,19 @@ paths:
         description: Provider specific parameters
         required: true
       responses:
-        201:
+        "201":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/operation'
           description: New operation
-        401:
+        "401":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/apiError'
           description: Malformed user input
-        404:
+        "404":
           content:
             application/json:
               schema:

@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Use MSYS_NO_PATHCONV to prevent Windows path conversion in Git Bash
+export MSYS_NO_PATHCONV=1
+
 exec docker run --rm -v ${PWD}:/local \
     -e GO_POST_PROCESS_FILE="/usr/local/bin/gofmt -w" \
-    openapitools/openapi-generator-cli \
+    openapitools/openapi-generator-cli:v4.2.3 \
     generate -i /local/datadatdat.yml -g go -o /local -t /local/templates \
     --additional-properties=packageName=datadatdatclient \
-    --git-user-id=datadatdat-data --git-repo-id=datadatdat-client-go
+    --git-user-id=datadatdat --git-repo-id=datadatdat-client-go
