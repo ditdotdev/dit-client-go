@@ -9,6 +9,8 @@ import (
 	"testing"
 )
 
+const testErrorCodeNotFound = "NOT_FOUND"
+
 // newTestServer creates a test server and configures an APIClient pointing to it.
 func newTestServer(handler http.HandlerFunc) (*httptest.Server, *APIClient) {
 	ts := httptest.NewServer(handler)
@@ -57,7 +59,7 @@ func TestGetCommit_Success(t *testing.T) {
 
 func TestGetCommit_NotFound(t *testing.T) {
 	apiErr := ApiError{
-		Code:    "NOT_FOUND",
+		Code:    testErrorCodeNotFound,
 		Message: "Commit not found",
 	}
 
@@ -85,7 +87,7 @@ func TestGetCommit_NotFound(t *testing.T) {
 	if !ok {
 		t.Fatal("expected ApiError model in error")
 	}
-	if model.Code != "NOT_FOUND" {
+	if model.Code != testErrorCodeNotFound {
 		t.Errorf("expected error code NOT_FOUND, got %q", model.Code)
 	}
 }
@@ -171,7 +173,7 @@ func TestCreateCommit_NotFound(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    "NOT_FOUND",
+			Code:    testErrorCodeNotFound,
 			Message: "repository not found",
 		})
 	})
@@ -240,7 +242,7 @@ func TestDeleteCommit_NotFound(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    "NOT_FOUND",
+			Code:    testErrorCodeNotFound,
 			Message: "commit not found",
 		})
 	})
@@ -262,7 +264,7 @@ func TestDeleteCommit_NotFound(t *testing.T) {
 	if !ok {
 		t.Fatal("expected ApiError model in error")
 	}
-	if model.Code != "NOT_FOUND" {
+	if model.Code != testErrorCodeNotFound {
 		t.Errorf("expected error code NOT_FOUND, got %q", model.Code)
 	}
 }
@@ -309,7 +311,7 @@ func TestAPIRequest_UserAgentHeader(t *testing.T) {
 func TestAPIRequest_AcceptHeader(t *testing.T) {
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
 		accept := r.Header.Get("Accept")
-		if accept != "application/json" {
+		if accept != testContentTypeJSON {
 			t.Errorf("expected Accept: application/json, got %q", accept)
 		}
 		w.Header().Set("Content-Type", "application/json")

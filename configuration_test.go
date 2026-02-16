@@ -4,6 +4,8 @@ import (
 	"testing"
 )
 
+const testDefaultBasePath = "http://localhost:5001"
+
 // ---------------------------------------------------------------------------
 // NewConfiguration
 // ---------------------------------------------------------------------------
@@ -11,7 +13,7 @@ import (
 func TestNewConfiguration_Defaults(t *testing.T) {
 	cfg := NewConfiguration()
 
-	if cfg.BasePath != "http://localhost:5001" {
+	if cfg.BasePath != testDefaultBasePath {
 		t.Errorf("expected default BasePath http://localhost:5001, got %q", cfg.BasePath)
 	}
 	if cfg.UserAgent != "OpenAPI-Generator/1.0.0/go" {
@@ -37,7 +39,7 @@ func TestNewConfiguration_ServersInitialized(t *testing.T) {
 	if len(cfg.Servers) != 1 {
 		t.Fatalf("expected 1 server, got %d", len(cfg.Servers))
 	}
-	if cfg.Servers[0].Url != "http://localhost:5001" {
+	if cfg.Servers[0].Url != testDefaultBasePath {
 		t.Errorf("expected server URL http://localhost:5001, got %q", cfg.Servers[0].Url)
 	}
 	if cfg.Servers[0].Description != "No description provided" {
@@ -94,7 +96,7 @@ func TestServerUrl_DefaultIndex(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if url != "http://localhost:5001" {
+	if url != testDefaultBasePath {
 		t.Errorf("expected http://localhost:5001, got %q", url)
 	}
 }

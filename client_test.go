@@ -9,6 +9,13 @@ import (
 	"time"
 )
 
+const (
+	testContentTypeJSON     = "application/json"
+	testContentTypeJSONUTF8 = "application/json; charset=utf-8"
+	testContentTypePlain    = "text/plain; charset=utf-8"
+	testStringHello         = "hello"
+)
+
 // ---------------------------------------------------------------------------
 // selectHeaderContentType
 // ---------------------------------------------------------------------------
@@ -22,7 +29,7 @@ func TestSelectHeaderContentType_Empty(t *testing.T) {
 
 func TestSelectHeaderContentType_PrefersJSON(t *testing.T) {
 	got := selectHeaderContentType([]string{"text/plain", "application/json", "application/xml"})
-	if got != "application/json" {
+	if got != testContentTypeJSON {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
@@ -36,7 +43,7 @@ func TestSelectHeaderContentType_FallsBackToFirst(t *testing.T) {
 
 func TestSelectHeaderContentType_SingleJSON(t *testing.T) {
 	got := selectHeaderContentType([]string{"application/json"})
-	if got != "application/json" {
+	if got != testContentTypeJSON {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
@@ -54,7 +61,7 @@ func TestSelectHeaderAccept_Empty(t *testing.T) {
 
 func TestSelectHeaderAccept_PrefersJSON(t *testing.T) {
 	got := selectHeaderAccept([]string{"text/plain", "application/json"})
-	if got != "application/json" {
+	if got != testContentTypeJSON {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
@@ -68,7 +75,7 @@ func TestSelectHeaderAccept_JoinsWhenNoJSON(t *testing.T) {
 
 func TestSelectHeaderAccept_CaseInsensitiveJSON(t *testing.T) {
 	got := selectHeaderAccept([]string{"Application/JSON"})
-	if got != "application/json" {
+	if got != testContentTypeJSON {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
@@ -107,7 +114,7 @@ func TestContains_EmptySlice(t *testing.T) {
 
 func TestParameterToString_StringValue(t *testing.T) {
 	got := parameterToString("hello", "")
-	if got != "hello" {
+	if got != testStringHello {
 		t.Errorf("expected hello, got %q", got)
 	}
 }
@@ -213,14 +220,14 @@ func TestParameterToJson_SliceOfInts(t *testing.T) {
 func TestDetectContentType_Struct(t *testing.T) {
 	type sample struct{ Name string }
 	got := detectContentType(sample{Name: "test"})
-	if got != "application/json; charset=utf-8" {
+	if got != testContentTypeJSONUTF8 {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
 
 func TestDetectContentType_Map(t *testing.T) {
 	got := detectContentType(map[string]int{"a": 1})
-	if got != "application/json; charset=utf-8" {
+	if got != testContentTypeJSONUTF8 {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
@@ -228,14 +235,14 @@ func TestDetectContentType_Map(t *testing.T) {
 func TestDetectContentType_Pointer(t *testing.T) {
 	s := "hello"
 	got := detectContentType(&s)
-	if got != "application/json; charset=utf-8" {
+	if got != testContentTypeJSONUTF8 {
 		t.Errorf("expected application/json, got %q", got)
 	}
 }
 
 func TestDetectContentType_String(t *testing.T) {
 	got := detectContentType("hello")
-	if got != "text/plain; charset=utf-8" {
+	if got != testContentTypePlain {
 		t.Errorf("expected text/plain, got %q", got)
 	}
 }
@@ -251,7 +258,7 @@ func TestDetectContentType_ByteSlice(t *testing.T) {
 func TestDetectContentType_SliceOfStructs(t *testing.T) {
 	type item struct{ ID int }
 	got := detectContentType([]item{{ID: 1}})
-	if got != "application/json; charset=utf-8" {
+	if got != testContentTypeJSONUTF8 {
 		t.Errorf("expected application/json for slice of structs, got %q", got)
 	}
 }
