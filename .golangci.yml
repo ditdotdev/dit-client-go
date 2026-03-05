@@ -18,3 +18,13 @@ linters:
     - gocyclo
     - goconst
     - whitespace
+  settings:
+    gosec:
+      excludes:
+        # G117: false positive on BasicAuth.Password struct field in auto-generated OpenAPI client code
+        - G117
+        # G704: SSRF false positive - HTTPClient.Do() call in auto-generated client is intentional
+        - G704
+        # G706: log injection false positives - debug logging of HTTP request/response dumps
+        #       in auto-generated OpenAPI client code
+        - G706
