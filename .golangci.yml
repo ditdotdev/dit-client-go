@@ -15,6 +15,13 @@ linters:
     - unused
     - gosec
     - misspell
+  settings:
+    gosec:
+      excludes:
+        # Auto-generated OpenAPI client code - these are false positives
+        - G117 # BasicAuth.Password struct field matches secret pattern
+        - G704 # SSRF on HTTPClient.Do() - intentional purpose of an HTTP client
+        - G706 # Log injection in debug dump output - only when cfg.Debug is true
     - gocyclo
     - goconst
     - whitespace
