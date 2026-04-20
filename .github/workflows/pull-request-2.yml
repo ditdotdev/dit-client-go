@@ -61,13 +61,14 @@ jobs:
 
       - name: Run Go security scanner (gosec)
         run: |
-          # Use latest gosec for best security coverage
           go install github.com/securego/gosec/v2/cmd/gosec@latest
-          # Run gosec with JSON output for better CI integration
-          gosec -fmt=json -out=gosec-results.json ./... || true
-          # Also run with text output for human-readable results
-          gosec ./... || echo "Gosec completed with findings"
-        continue-on-error: true
+          # G117: "Password" struct field — generated from OpenAPI spec, not a hardcoded credential.
+          # G704: HTTP request from configured URL — base behavior of any generated OpenAPI client.
+          # G706: log.Printf of dump — generated debug logging, never user-facing.
+          # All three rules are suppressed at the workflow level because the source is auto-generated
+          # from openapi-generator and would lose any in-source // #nosec comments on regeneration.
+          gosec -exclude=G117,G704,G706 -fmt=json -out=gosec-results.json ./...
+          gosec -exclude=G117,G704,G706 ./...
 
       - name: Run Go vulnerability scanner (govulncheck)
         run: |
