@@ -424,9 +424,47 @@ func addFile(w *multipart.Writer, fieldName, path string) error {
 	return err
 }
 
-// Prevent trying to import "fmt"
-func reportError(format string, a ...interface{}) error {
-	return fmt.Errorf(format, a...)
+// shouldUseMultipart determines if multipart form encoding should be used.
+// Custom helper from datadatdat-client-go (not part of openapi-generator stock output).
+func (c *APIClient) shouldUseMultipart(headerParams map[string]string, formParams url.Values, fileBytes []byte, fileName string) bool {
+	return strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") && len(formParams) > 0 || (len(fileBytes) > 0 && fileName != "")
+}
+
+// createMultipartBody creates a multipart form body.
+// Custom helper from datadatdat-client-go (not part of openapi-generator stock output).
+func (c *APIClient) createMultipartBody(formParams url.Values, fileBytes []byte, fileName, formFileName string) (*bytes.Buffer, string, error) {
+	body := &bytes.Buffer{}
+	w := multipart.NewWriter(body)
+
+	for k, v := range formParams {
+		for _, iv := range v {
+			if strings.HasPrefix(k, "@") { // file
+				err := addFile(w, k[1:], iv)
+				if err != nil {
+					return nil, "", err
+				}
+			} else { // form value
+				_ = w.WriteField(k, iv)
+			}
+		}
+	}
+
+	if len(fileBytes) > 0 && fileName != "" {
+		w.Boundary()
+		part, err := w.CreateFormFile(formFileName, filepath.Base(fileName))
+		if err != nil {
+			return nil, "", err
+		}
+		_, err = part.Write(fileBytes)
+		if err != nil {
+			return nil, "", err
+		}
+	}
+
+	contentType := w.FormDataContentType()
+	_ = w.Close()
+
+	return body, contentType, nil
 }
 
 // Set request body from an interface{}

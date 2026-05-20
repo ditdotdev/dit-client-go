@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Operation**](operation.md)
+[**Operation**](Operation.md)
 
 ### Authorization
 
@@ -100,11 +100,11 @@ Optional parameters are passed through a pointer to a GetOperationProgressOpts s
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **lastId** | **optional.Int32**|  | 
+ **lastId** | ***int32** |  | 
 
 ### Return type
 
-[**[]ProgressEntry**](progressEntry.md)
+[**[]ProgressEntry**](ProgressEntry.md)
 
 ### Authorization
 
@@ -141,11 +141,11 @@ Optional parameters are passed through a pointer to a ListOperationsOpts struct
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **repository** | **optional.String**| Limit to the given repository | 
+ **repository** | ***string** | Limit to the given repository | 
 
 ### Return type
 
-[**[]Operation**](operation.md)
+[**[]Operation**](Operation.md)
 
 ### Authorization
 
@@ -190,11 +190,11 @@ Name | Type | Description  | Notes
 
 
 
- **metadataOnly** | **optional.Bool**| Transfer only tag metadata | 
+ **metadataOnly** | ***bool** | Transfer only tag metadata | 
 
 ### Return type
 
-[**Operation**](operation.md)
+[**Operation**](Operation.md)
 
 ### Authorization
 
@@ -239,11 +239,11 @@ Name | Type | Description  | Notes
 
 
 
- **metadataOnly** | **optional.Bool**| Transfer only tag metadata | 
+ **metadataOnly** | ***bool** | Transfer only tag metadata | 
 
 ### Return type
 
-[**Operation**](operation.md)
+[**Operation**](Operation.md)
 
 ### Authorization
 

@@ -1,8 +1,16 @@
 #!/bin/bash
 
+# Pin to a specific openapi-generator-cli version so regenerations are reproducible.
+# v7.22.0 is the latest stable as of this upgrade (https://hub.docker.com/r/openapitools/openapi-generator-cli/tags).
+#
+# Custom mustache templates live under templates/. Keep them MINIMAL —
+# every override is a maintenance liability when the generator's stock
+# templates evolve. See chore/upgrade-openapi-generator-v7 PR for the
+# audit + re-derivation that produced the current set.
+
 exec docker run --rm -v ${PWD}:/local \
     -e GO_POST_PROCESS_FILE="/usr/local/bin/gofmt -w" \
-    openapitools/openapi-generator-cli \
+    openapitools/openapi-generator-cli:v7.22.0 \
     generate -i /local/datadatdat.yml -g go -o /local -t /local/templates \
-    --additional-properties=packageName=datadatdatclient \
-    --git-user-id=datadatdat-data --git-repo-id=datadatdat-client-go
+    --additional-properties=packageName=datadatdatclient,withGoCodegenComment=true,apiNameSuffix=Api \
+    --git-user-id=datadatdat --git-repo-id=datadatdat-client-go

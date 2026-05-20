@@ -29,7 +29,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Repository**](repository.md)
+[**Repository**](Repository.md)
 
 ### Authorization
 
@@ -93,7 +93,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Repository**](repository.md)
+[**Repository**](Repository.md)
 
 ### Authorization
 
@@ -125,7 +125,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**RepositoryStatus**](repositoryStatus.md)
+[**RepositoryStatus**](RepositoryStatus.md)
 
 ### Authorization
 
@@ -153,7 +153,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**[]Repository**](repository.md)
+[**[]Repository**](Repository.md)
 
 ### Authorization
 
@@ -186,7 +186,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Repository**](repository.md)
+[**Repository**](Repository.md)
 
 ### Authorization
 
