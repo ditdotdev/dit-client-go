@@ -18,6 +18,20 @@ linters:
     - gocyclo
     - goconst
     - whitespace
+  exclusions:
+    # Skip files carrying the `// Code generated ... DO NOT EDIT.` marker.
+    # Every file emitted by ./generate (after the v7.22.0 upgrade) has this
+    # marker, so api_*.go / model_*.go / client.go / configuration.go /
+    # response.go / utils.go are all auto-excluded.
+    generated: strict
+    rules:
+      # goconst flags every repeated literal in our hand-written *_test.go
+      # files ("test", "value", "host", "port", "localhost", etc.). These
+      # are test fixture values; inlining them keeps tests readable. Skip
+      # goconst on test files.
+      - path: _test\.go$
+        linters:
+          - goconst
   settings:
     gosec:
       excludes:
