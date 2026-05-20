@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Volume**](volume.md)
+[**Volume**](Volume.md)
 
 ### Authorization
 
@@ -163,7 +163,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Volume**](volume.md)
+[**Volume**](Volume.md)
 
 ### Authorization
 
@@ -196,7 +196,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**VolumeStatus**](volumeStatus.md)
+[**VolumeStatus**](VolumeStatus.md)
 
 ### Authorization
 
@@ -228,7 +228,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**[]Volume**](volume.md)
+[**[]Volume**](Volume.md)
 
 ### Authorization
 
