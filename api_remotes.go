@@ -15,8 +15,8 @@ import (
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"strings"
 	"reflect"
+	"strings"
 )
 
 // Linger please
@@ -29,9 +29,10 @@ type RemotesApiService service
 
 /*
 CreateRemote Create new remote
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remote Remote to create
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remote Remote to create
+
 @return Remote
 */
 func (a *RemotesApiService) CreateRemote(ctx _context.Context, repositoryName string, remote Remote) (Remote, *_nethttp.Response, error) {
@@ -46,7 +47,7 @@ func (a *RemotesApiService) CreateRemote(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -123,13 +124,13 @@ func (a *RemotesApiService) CreateRemote(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -147,9 +148,9 @@ func (a *RemotesApiService) CreateRemote(ctx _context.Context, repositoryName st
 
 /*
 DeleteRemote Delete remote
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
 */
 func (a *RemotesApiService) DeleteRemote(ctx _context.Context, repositoryName string, remoteName string) (*_nethttp.Response, error) {
 	var (
@@ -162,9 +163,9 @@ func (a *RemotesApiService) DeleteRemote(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -219,13 +220,13 @@ func (a *RemotesApiService) DeleteRemote(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -234,9 +235,10 @@ func (a *RemotesApiService) DeleteRemote(ctx _context.Context, repositoryName st
 
 /*
 GetRemote Get information about a particular remote
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
+
 @return Remote
 */
 func (a *RemotesApiService) GetRemote(ctx _context.Context, repositoryName string, remoteName string) (Remote, *_nethttp.Response, error) {
@@ -251,9 +253,9 @@ func (a *RemotesApiService) GetRemote(ctx _context.Context, repositoryName strin
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -318,13 +320,13 @@ func (a *RemotesApiService) GetRemote(ctx _context.Context, repositoryName strin
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -342,11 +344,12 @@ func (a *RemotesApiService) GetRemote(ctx _context.Context, repositoryName strin
 
 /*
 GetRemoteCommit Get a remote commit
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
- * @param commitId Commit identifier
- * @param datadatdatRemoteParameters Remote-specific parameters
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
+  - @param commitId Commit identifier
+  - @param datadatdatRemoteParameters Remote-specific parameters
+
 @return Commit
 */
 func (a *RemotesApiService) GetRemoteCommit(ctx _context.Context, repositoryName string, remoteName string, commitId string, datadatdatRemoteParameters RemoteParameters) (Commit, *_nethttp.Response, error) {
@@ -361,11 +364,11 @@ func (a *RemotesApiService) GetRemoteCommit(ctx _context.Context, repositoryName
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"commitId"+"}", _neturl.QueryEscape(parameterToString(commitId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -390,9 +393,9 @@ func (a *RemotesApiService) GetRemoteCommit(ctx _context.Context, repositoryName
 	}
 	var err error
 	localVarHeaderParams["Datadatdat-remote-parameters"], err = parameterToJson(datadatdatRemoteParameters)
-    if err != nil {
-        return localVarReturnValue, nil, err
-    }
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -444,13 +447,13 @@ func (a *RemotesApiService) GetRemoteCommit(ctx _context.Context, repositoryName
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -469,17 +472,18 @@ func (a *RemotesApiService) GetRemoteCommit(ctx _context.Context, repositoryName
 // ListRemoteCommitsOpts Optional parameters for the method 'ListRemoteCommits'.
 // Set fields to a pointer-to-value when present; leave nil when absent.
 type ListRemoteCommitsOpts struct {
-    Tag *[]string
+	Tag *[]string
 }
 
 /*
 ListRemoteCommits List remote commits
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
- * @param datadatdatRemoteParameters Remote-specific parameters
- * @param optional nil or *ListRemoteCommitsOpts - Optional Parameters:
- * @param "Tag" (*[]string) -  Tags (name or name=value) to search for
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
+  - @param datadatdatRemoteParameters Remote-specific parameters
+  - @param optional nil or *ListRemoteCommitsOpts - Optional Parameters:
+  - @param "Tag" (*[]string) -  Tags (name or name=value) to search for
+
 @return []Commit
 */
 func (a *RemotesApiService) ListRemoteCommits(ctx _context.Context, repositoryName string, remoteName string, datadatdatRemoteParameters RemoteParameters, localVarOptionals *ListRemoteCommitsOpts) ([]Commit, *_nethttp.Response, error) {
@@ -494,9 +498,9 @@ func (a *RemotesApiService) ListRemoteCommits(ctx _context.Context, repositoryNa
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}/commits"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -532,9 +536,9 @@ func (a *RemotesApiService) ListRemoteCommits(ctx _context.Context, repositoryNa
 	}
 	var err error
 	localVarHeaderParams["Datadatdat-remote-parameters"], err = parameterToJson(datadatdatRemoteParameters)
-    if err != nil {
-        return localVarReturnValue, nil, err
-    }
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -586,13 +590,13 @@ func (a *RemotesApiService) ListRemoteCommits(ctx _context.Context, repositoryNa
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -610,8 +614,9 @@ func (a *RemotesApiService) ListRemoteCommits(ctx _context.Context, repositoryNa
 
 /*
 ListRemotes Get list of remotes
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+
 @return []Remote
 */
 func (a *RemotesApiService) ListRemotes(ctx _context.Context, repositoryName string) ([]Remote, *_nethttp.Response, error) {
@@ -626,7 +631,7 @@ func (a *RemotesApiService) ListRemotes(ctx _context.Context, repositoryName str
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -691,13 +696,13 @@ func (a *RemotesApiService) ListRemotes(ctx _context.Context, repositoryName str
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -715,10 +720,11 @@ func (a *RemotesApiService) ListRemotes(ctx _context.Context, repositoryName str
 
 /*
 UpdateRemote Update remote information
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param remoteName Name of the remote
- * @param remote Remote information to update
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param remoteName Name of the remote
+  - @param remote Remote information to update
+
 @return Remote
 */
 func (a *RemotesApiService) UpdateRemote(ctx _context.Context, repositoryName string, remoteName string, remote Remote) (Remote, *_nethttp.Response, error) {
@@ -733,9 +739,9 @@ func (a *RemotesApiService) UpdateRemote(ctx _context.Context, repositoryName st
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/remotes/{remoteName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
-	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"remoteName"+"}", _neturl.QueryEscape(parameterToString(remoteName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -812,13 +818,13 @@ func (a *RemotesApiService) UpdateRemote(ctx _context.Context, repositoryName st
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

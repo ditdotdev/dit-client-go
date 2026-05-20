@@ -27,7 +27,8 @@ type ContextsApiService service
 
 /*
 GetContext Get current context
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+
 @return Context
 */
 func (a *ContextsApiService) GetContext(ctx _context.Context) (Context, *_nethttp.Response, error) {

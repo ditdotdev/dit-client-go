@@ -28,8 +28,9 @@ type RepositoriesApiService service
 
 /*
 CreateRepository Create new repository
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repository New repository to create
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repository New repository to create
+
 @return Repository
 */
 func (a *RepositoriesApiService) CreateRepository(ctx _context.Context, repository Repository) (Repository, *_nethttp.Response, error) {
@@ -109,13 +110,13 @@ func (a *RepositoriesApiService) CreateRepository(ctx _context.Context, reposito
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -133,8 +134,8 @@ func (a *RepositoriesApiService) CreateRepository(ctx _context.Context, reposito
 
 /*
 DeleteRepository Remove a repository
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
 */
 func (a *RepositoriesApiService) DeleteRepository(ctx _context.Context, repositoryName string) (*_nethttp.Response, error) {
 	var (
@@ -147,7 +148,7 @@ func (a *RepositoriesApiService) DeleteRepository(ctx _context.Context, reposito
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -202,13 +203,13 @@ func (a *RepositoriesApiService) DeleteRepository(ctx _context.Context, reposito
 			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarHTTPResponse, newErr
 	}
 
@@ -217,8 +218,9 @@ func (a *RepositoriesApiService) DeleteRepository(ctx _context.Context, reposito
 
 /*
 GetRepository Get info for a repository
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+
 @return Repository
 */
 func (a *RepositoriesApiService) GetRepository(ctx _context.Context, repositoryName string) (Repository, *_nethttp.Response, error) {
@@ -233,7 +235,7 @@ func (a *RepositoriesApiService) GetRepository(ctx _context.Context, repositoryN
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -298,13 +300,13 @@ func (a *RepositoriesApiService) GetRepository(ctx _context.Context, repositoryN
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -322,8 +324,9 @@ func (a *RepositoriesApiService) GetRepository(ctx _context.Context, repositoryN
 
 /*
 GetRepositoryStatus Get current status of a repository
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+
 @return RepositoryStatus
 */
 func (a *RepositoriesApiService) GetRepositoryStatus(ctx _context.Context, repositoryName string) (RepositoryStatus, *_nethttp.Response, error) {
@@ -338,7 +341,7 @@ func (a *RepositoriesApiService) GetRepositoryStatus(ctx _context.Context, repos
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}/status"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -403,13 +406,13 @@ func (a *RepositoriesApiService) GetRepositoryStatus(ctx _context.Context, repos
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -427,7 +430,8 @@ func (a *RepositoriesApiService) GetRepositoryStatus(ctx _context.Context, repos
 
 /*
 ListRepositories List repositories
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+
 @return []Repository
 */
 func (a *RepositoriesApiService) ListRepositories(ctx _context.Context) ([]Repository, *_nethttp.Response, error) {
@@ -495,13 +499,13 @@ func (a *RepositoriesApiService) ListRepositories(ctx _context.Context) ([]Repos
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
@@ -519,9 +523,10 @@ func (a *RepositoriesApiService) ListRepositories(ctx _context.Context) ([]Repos
 
 /*
 UpdateRepository Update or rename a repository
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param repositoryName Name of the repository
- * @param repository New repository
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param repositoryName Name of the repository
+  - @param repository New repository
+
 @return Repository
 */
 func (a *RepositoriesApiService) UpdateRepository(ctx _context.Context, repositoryName string, repository Repository) (Repository, *_nethttp.Response, error) {
@@ -536,7 +541,7 @@ func (a *RepositoriesApiService) UpdateRepository(ctx _context.Context, reposito
 
 	// create path and map variables
 	localVarPath := a.client.cfg.BasePath + "/v1/repositories/{repositoryName}"
-	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")) , -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"repositoryName"+"}", _neturl.QueryEscape(parameterToString(repositoryName, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -613,13 +618,13 @@ func (a *RepositoriesApiService) UpdateRepository(ctx _context.Context, reposito
 			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
-			var v ApiError
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
+		var v ApiError
+		err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+		if err != nil {
+			newErr.error = err.Error()
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		newErr.model = v
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 

@@ -37,21 +37,22 @@ type {{#structPrefix}}{{&classname}}{{/structPrefix}}{{{nickname}}}Opts struct {
 {{#notes}}
 {{notes}}
 {{/notes}}
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 {{#allParams}}
 {{#required}}
- * @param {{paramName}}{{#description}} {{{.}}}{{/description}}
+  - @param {{paramName}}{{#description}} {{{.}}}{{/description}}
 {{/required}}
 {{/allParams}}
 {{#hasOptionalParams}}
- * @param optional nil or *{{#structPrefix}}{{&classname}}{{/structPrefix}}{{{nickname}}}Opts - Optional Parameters:
+  - @param optional nil or *{{#structPrefix}}{{&classname}}{{/structPrefix}}{{{nickname}}}Opts - Optional Parameters:
 {{#allParams}}
 {{^required}}
- * @param "{{vendorExtensions.x-export-param-name}}" (*{{{dataType}}}) - {{#description}} {{{.}}}{{/description}}
+  - @param "{{vendorExtensions.x-export-param-name}}" (*{{{dataType}}}) - {{#description}} {{{.}}}{{/description}}
 {{/required}}
 {{/allParams}}
 {{/hasOptionalParams}}
 {{#returnType}}
+
 @return {{{returnType}}}
 {{/returnType}}
 */
