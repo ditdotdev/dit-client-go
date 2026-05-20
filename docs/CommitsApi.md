@@ -64,7 +64,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Commit**](commit.md)
+[**Commit**](Commit.md)
 
 ### Authorization
 
@@ -130,7 +130,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Commit**](commit.md)
+[**Commit**](Commit.md)
 
 ### Authorization
 
@@ -163,7 +163,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**CommitStatus**](commitStatus.md)
+[**CommitStatus**](CommitStatus.md)
 
 ### Authorization
 
@@ -202,11 +202,11 @@ Optional parameters are passed through a pointer to a ListCommitsOpts struct
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **tag** | [**optional.Interface of []string**](string.md)| Tags (name or name&#x3D;value) to search for | 
+ **tag** | ***[]string** | Tags (name or name&#x3D;value) to search for | 
 
 ### Return type
 
-[**[]Commit**](commit.md)
+[**[]Commit**](Commit.md)
 
 ### Authorization
 
@@ -240,7 +240,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**Commit**](commit.md)
+[**Commit**](Commit.md)
 
 ### Authorization
 

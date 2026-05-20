@@ -1,4 +1,23 @@
+# OpenAPI Generator Ignore
+#
+# Files listed here are NOT overwritten by `./generate`. See:
+# https://openapi-generator.tech/docs/customization/#ignore-file-format
+
+# Project documentation we maintain by hand
 README.md
+
+# CI / repo housekeeping we own
 .travis.yml
 .gitignore
 git_push.sh
+
+# go.mod / go.sum: managed via dependabot + go mod tidy. v7's go.mod.mustache
+# regenerates these with stale dependency versions and the wrong Go version.
+go.mod
+go.sum
+
+# v7 emits auto-stub test files under test/ that just compare an empty client
+# against the real API. We have our own hand-written tests at the repo root
+# (client_test.go, configuration_test.go, response_test.go, api_commits_test.go)
+# which actually exercise the code we care about.
+test/**

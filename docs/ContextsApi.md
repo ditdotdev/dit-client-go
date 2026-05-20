@@ -20,7 +20,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**Context**](context.md)
+[**Context**](Context.md)
 
 ### Authorization
 

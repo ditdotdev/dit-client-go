@@ -62,13 +62,21 @@ jobs:
       - name: Run Go security scanner (gosec)
         run: |
           go install github.com/securego/gosec/v2/cmd/gosec@latest
-          # G117: "Password" struct field — generated from OpenAPI spec, not a hardcoded credential.
-          # G704: HTTP request from configured URL — base behavior of any generated OpenAPI client.
+          # Rules suppressed at the workflow level. Every emitted file carries the standard
+          # // Code generated ... DO NOT EDIT. marker (since the openapi-generator v7.22.0
+          # upgrade in #29), so any in-source // #nosec comments would be lost on the next
+          # ./generate run. Workflow-level exclusion is the durable place.
+          #
+          # G104: Body.Close() error unchecked — convention in generated openapi clients;
+          #       the body has already been drained by io.ReadAll above the Close() call.
+          # G117: "Password" struct field — generated from OpenAPI spec, not hardcoded.
+          # G304: addFile helper opens a caller-supplied path for multipart upload.
+          #       The whole purpose of the helper is to expose a file-upload entry point;
+          #       constraining the path here would defeat the API surface.
+          # G704: HTTP request from configured URL — the base behavior of any HTTP client.
           # G706: log.Printf of dump — generated debug logging, never user-facing.
-          # All three rules are suppressed at the workflow level because the source is auto-generated
-          # from openapi-generator and would lose any in-source // #nosec comments on regeneration.
-          gosec -exclude=G117,G704,G706 -fmt=json -out=gosec-results.json ./...
-          gosec -exclude=G117,G704,G706 ./...
+          gosec -exclude=G104,G117,G304,G704,G706 -fmt=json -out=gosec-results.json ./...
+          gosec -exclude=G104,G117,G304,G704,G706 ./...
 
       - name: Run Go vulnerability scanner (govulncheck)
         run: |

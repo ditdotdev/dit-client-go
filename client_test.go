@@ -1,4 +1,4 @@
-package Datadatdatclient
+package datadatdatclient
 
 import (
 	"bytes"
