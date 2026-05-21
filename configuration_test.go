@@ -1,6 +1,7 @@
 package datadatdatclient
 
 import (
+	"context"
 	"testing"
 )
 
@@ -13,9 +14,6 @@ const testDefaultBasePath = "http://localhost:5001"
 func TestNewConfiguration_Defaults(t *testing.T) {
 	cfg := NewConfiguration()
 
-	if cfg.BasePath != testDefaultBasePath {
-		t.Errorf("expected default BasePath http://localhost:5001, got %q", cfg.BasePath)
-	}
 	if cfg.UserAgent != "OpenAPI-Generator/1.0.0/go" {
 		t.Errorf("expected default UserAgent, got %q", cfg.UserAgent)
 	}
@@ -39,10 +37,10 @@ func TestNewConfiguration_ServersInitialized(t *testing.T) {
 	if len(cfg.Servers) != 1 {
 		t.Fatalf("expected 1 server, got %d", len(cfg.Servers))
 	}
-	if cfg.Servers[0].Url != testDefaultBasePath {
-		t.Errorf("expected server URL http://localhost:5001, got %q", cfg.Servers[0].Url)
+	if cfg.Servers[0].URL != testDefaultBasePath {
+		t.Errorf("expected server URL http://localhost:5001, got %q", cfg.Servers[0].URL)
 	}
-	if cfg.Servers[0].Description != "No description provided" {
+	if cfg.Servers[0].Description != "Local Datadatdat server (default)" {
 		t.Errorf("expected server description, got %q", cfg.Servers[0].Description)
 	}
 }
@@ -87,12 +85,12 @@ func TestAddDefaultHeader_Overwrite(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
-// ServerUrl
+// ServerURL
 // ---------------------------------------------------------------------------
 
-func TestServerUrl_DefaultIndex(t *testing.T) {
+func TestServerURL_DefaultIndex(t *testing.T) {
 	cfg := NewConfiguration()
-	url, err := cfg.ServerUrl(0, nil)
+	url, err := cfg.ServerURL(0, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -101,27 +99,27 @@ func TestServerUrl_DefaultIndex(t *testing.T) {
 	}
 }
 
-func TestServerUrl_IndexOutOfRange_Negative(t *testing.T) {
+func TestServerURL_IndexOutOfRange_Negative(t *testing.T) {
 	cfg := NewConfiguration()
-	_, err := cfg.ServerUrl(-1, nil)
+	_, err := cfg.ServerURL(-1, nil)
 	if err == nil {
 		t.Error("expected error for negative index")
 	}
 }
 
-func TestServerUrl_IndexOutOfRange_TooLarge(t *testing.T) {
+func TestServerURL_IndexOutOfRange_TooLarge(t *testing.T) {
 	cfg := NewConfiguration()
-	_, err := cfg.ServerUrl(5, nil)
+	_, err := cfg.ServerURL(5, nil)
 	if err == nil {
 		t.Error("expected error for index out of range")
 	}
 }
 
-func TestServerUrl_VariableSubstitution(t *testing.T) {
+func TestServerURL_VariableSubstitution(t *testing.T) {
 	cfg := NewConfiguration()
-	cfg.Servers = []ServerConfiguration{
+	cfg.Servers = ServerConfigurations{
 		{
-			Url:         "https://{host}:{port}/api",
+			URL:         "https://{host}:{port}/api",
 			Description: "Test server",
 			Variables: map[string]ServerVariable{
 				"host": {
@@ -136,7 +134,7 @@ func TestServerUrl_VariableSubstitution(t *testing.T) {
 		},
 	}
 
-	url, err := cfg.ServerUrl(0, map[string]string{"host": "example.com", "port": "443"})
+	url, err := cfg.ServerURL(0, map[string]string{"host": "example.com", "port": "443"})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -145,11 +143,11 @@ func TestServerUrl_VariableSubstitution(t *testing.T) {
 	}
 }
 
-func TestServerUrl_VariableSubstitution_DefaultValues(t *testing.T) {
+func TestServerURL_VariableSubstitution_DefaultValues(t *testing.T) {
 	cfg := NewConfiguration()
-	cfg.Servers = []ServerConfiguration{
+	cfg.Servers = ServerConfigurations{
 		{
-			Url:         "https://{host}:{port}/api",
+			URL:         "https://{host}:{port}/api",
 			Description: "Test server",
 			Variables: map[string]ServerVariable{
 				"host": {
@@ -164,8 +162,7 @@ func TestServerUrl_VariableSubstitution_DefaultValues(t *testing.T) {
 		},
 	}
 
-	// Pass nil variables - should use defaults
-	url, err := cfg.ServerUrl(0, nil)
+	url, err := cfg.ServerURL(0, nil)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -174,11 +171,11 @@ func TestServerUrl_VariableSubstitution_DefaultValues(t *testing.T) {
 	}
 }
 
-func TestServerUrl_InvalidVariableValue(t *testing.T) {
+func TestServerURL_InvalidVariableValue(t *testing.T) {
 	cfg := NewConfiguration()
-	cfg.Servers = []ServerConfiguration{
+	cfg.Servers = ServerConfigurations{
 		{
-			Url:         "https://{host}/api",
+			URL:         "https://{host}/api",
 			Description: "Test server",
 			Variables: map[string]ServerVariable{
 				"host": {
@@ -189,17 +186,17 @@ func TestServerUrl_InvalidVariableValue(t *testing.T) {
 		},
 	}
 
-	_, err := cfg.ServerUrl(0, map[string]string{"host": "invalid-host.com"})
+	_, err := cfg.ServerURL(0, map[string]string{"host": "invalid-host.com"})
 	if err == nil {
 		t.Error("expected error for invalid variable value")
 	}
 }
 
-func TestServerUrl_NoEnumRestrictions(t *testing.T) {
+func TestServerURL_NoEnumRestrictions(t *testing.T) {
 	cfg := NewConfiguration()
-	cfg.Servers = []ServerConfiguration{
+	cfg.Servers = ServerConfigurations{
 		{
-			Url:         "https://{host}/api",
+			URL:         "https://{host}/api",
 			Description: "Test server",
 			Variables: map[string]ServerVariable{
 				"host": {
@@ -210,12 +207,46 @@ func TestServerUrl_NoEnumRestrictions(t *testing.T) {
 		},
 	}
 
-	url, err := cfg.ServerUrl(0, map[string]string{"host": "any-host.com"})
+	url, err := cfg.ServerURL(0, map[string]string{"host": "any-host.com"})
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if url != "https://any-host.com/api" {
 		t.Errorf("expected https://any-host.com/api, got %q", url)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// ServerURLWithContext
+// ---------------------------------------------------------------------------
+
+func TestServerURLWithContext_NilContext(t *testing.T) {
+	// The generated ServerURLWithContext explicitly handles a nil context as
+	// a fast-path that skips index/variable lookup. We test that fast-path
+	// here, which is why staticcheck's SA1012 is suppressed.
+	cfg := NewConfiguration()
+	url, err := cfg.ServerURLWithContext(nil, "any") //nolint:staticcheck // SA1012: exercising the explicit nil-context fast path
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if url != testDefaultBasePath {
+		t.Errorf("expected default URL, got %q", url)
+	}
+}
+
+func TestServerURLWithContext_ServerIndexOverride(t *testing.T) {
+	cfg := NewConfiguration()
+	cfg.Servers = ServerConfigurations{
+		{URL: "http://primary"},
+		{URL: "http://secondary"},
+	}
+	ctx := context.WithValue(context.Background(), ContextServerIndex, 1)
+	url, err := cfg.ServerURLWithContext(ctx, "any")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if url != "http://secondary" {
+		t.Errorf("expected secondary URL, got %q", url)
 	}
 }
 
@@ -230,17 +261,8 @@ func TestContextKey_String(t *testing.T) {
 	}
 }
 
-func TestContextKey_Variables(t *testing.T) {
-	if ContextOAuth2.String() != "auth token" {
-		t.Errorf("expected 'auth token' for ContextOAuth2, got %q", ContextOAuth2.String())
-	}
-	if ContextBasicAuth.String() != "auth basic" {
-		t.Errorf("expected 'auth basic' for ContextBasicAuth, got %q", ContextBasicAuth.String())
-	}
-	if ContextAccessToken.String() != "auth accesstoken" {
-		t.Errorf("expected 'auth accesstoken' for ContextAccessToken, got %q", ContextAccessToken.String())
-	}
-	if ContextAPIKey.String() != "auth apikey" {
-		t.Errorf("expected 'auth apikey' for ContextAPIKey, got %q", ContextAPIKey.String())
+func TestContextKey_ServerIndex(t *testing.T) {
+	if ContextServerIndex.String() != "auth serverIndex" {
+		t.Errorf("expected 'auth serverIndex', got %q", ContextServerIndex.String())
 	}
 }

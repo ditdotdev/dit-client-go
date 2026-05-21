@@ -5,29 +5,88 @@ For general information about contributing changes, see the
 
 ## How it Works
 
-The project is entirely generated via the [OpenAPI Generator](https://openapi-generator.tech/). The resulting
-files are committed to the repository so they can be easily imported via go modules. To updated the generated
-code, you will need to:
+The Go client is generated from `datadatdat.yml` by [openapi-generator-cli](https://openapi-generator.tech/),
+pinned to **v7.22.0** in the `generate` script. The generated files are committed to the repository so
+they can be imported as a Go module without consumers needing the generator tooling.
 
-1. Update `datadatdat.yml` with the specification from the `datadatdat-server` repository.
-2. Run `generate`. This requires docker, and likely work on windows systems. If necessary, you can run the openapi
-   generator by hand, but you will be responsible for ensuring the right options are specified.
-3. If the new API spec contains renamed or deleted objects, you will need to manually delete those objects.
-4. Run `go build` to properly set the go version in the `go.mod` file.
+To regenerate after spec changes:
 
-If you update to a later version of the openapi generator, you will need to update the mustache templates in
-`templates`, which include a change to `api.mustache` to pass header parameters as JSON instead of strings.
+1. Update `datadatdat.yml` with the new specification.
+2. Run `./generate`. This requires Docker (the script runs the openapi-generator container).
+3. If the new spec removes models or operations, manually `git rm` the corresponding `model_*.go` /
+   `api_*.go` files — the generator does not delete stale files on its own.
+4. Run `go build ./...` and `go test ./...` to verify the regeneration is clean.
+
+### Templates
+
+We **do not** maintain local mustache template overrides. The stock upstream Go templates emit
+idiomatic v7 code (fluent request builders, `io.ReadAll`, full marshallers, getter/setter pairs).
+Customisation that needs to differ from stock is passed via `--additional-properties` in the
+`generate` script — currently `packageName`, `withGoCodegenComment`, and `apiNameSuffix=Api`.
+
+If a future generator upgrade emits something unacceptable, the right fix is to either (a) negotiate
+upstream, or (b) add a single targeted override under a fresh `templates/` directory. Avoid wholesale
+template copies — they go stale and turn the next generator upgrade into archaeology.
+
+## Using the Generated Client
+
+The v7 generator emits a fluent request-builder API. Each operation returns a request type that
+you can decorate with optional parameters before calling `.Execute()`:
+
+```go
+cfg := datadatdatclient.NewConfiguration()
+cfg.Servers = datadatdatclient.ServerConfigurations{
+    {URL: "http://localhost:5001"},
+}
+client := datadatdatclient.NewAPIClient(cfg)
+
+// GET with required path params only
+commit, resp, err := client.CommitsApi.
+    GetCommit(ctx, "myrepo", "abc123").
+    Execute()
+
+// POST with a required request body
+created, resp, err := client.CommitsApi.
+    CreateCommit(ctx, "myrepo").
+    Commit(datadatdatclient.Commit{Id: "new", Properties: map[string]any{}}).
+    Execute()
+
+// GET with optional query parameters
+commits, resp, err := client.CommitsApi.
+    ListCommits(ctx, "myrepo").
+    Tag([]string{"production"}).
+    Execute()
+```
+
+Errors are returned as `*GenericOpenAPIError`. When the server responds with an `application/json`
+error body that matches the `ApiError` schema, the parsed model is available via `err.Model()`.
 
 ## Building
 
-Run `go build` to build the package.
+```bash
+go build ./...
+go test ./...
+```
 
 ## Testing
 
-Because the code is completely auto-generated, there are no dedicated tests for the client, as we'd just be testing
-the operation of the openapi generator.
+Hand-written integration tests live alongside the generated code as `*_test.go` files (e.g.
+`api_commits_test.go`). They spin up an `httptest.NewServer` so we can exercise the real request
+path, body marshalling, and error-decoding behaviour without depending on a live `datadatdat-server`.
+
+The openapi-generator also emits its own auto-stub test files at `test/api_*_test.go`. We ignore
+those via `.openapi-generator-ignore` — they wrap every operation in `t.Skip()` and only assert
+`StatusCode == 200`, so they add no real coverage.
 
 ## Releasing
 
-Since it is delivered as a go module, releasing requires only creating a new tag with the appropriate version
-string.
+The module is released by tagging the commit. CI publishes a GitHub Release via release-drafter
+and clients pick up the new version through `go get`.
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Consumer repos (`datadatdat`, `datadatdat-server`, `datadatdat-docker-proxy`) bump
+`github.com/datadatdat/datadatdat-client-go` in their `go.mod` after a release.

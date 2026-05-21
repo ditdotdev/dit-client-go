@@ -10,13 +10,44 @@ Method | HTTP request | Description
 
 ## GetContext
 
-> Context GetContext(ctx, )
+> Context GetContext(ctx).Execute()
 
 Get current context
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.ContextsApi.GetContext(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `ContextsApi.GetContext``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetContext`: Context
+	fmt.Fprintf(os.Stdout, "Response from `ContextsApi.GetContext`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetContextRequest struct via the builder pattern
+
 
 ### Return type
 

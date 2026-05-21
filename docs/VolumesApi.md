@@ -16,18 +16,54 @@ Method | HTTP request | Description
 
 ## ActivateVolume
 
-> ActivateVolume(ctx, repositoryName, volumeName)
+> ActivateVolume(ctx, repositoryName, volumeName).Execute()
 
 Activate a volume for use by a repository (e.g. mount)
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	volumeName := "volumeName_example" // string | Name of the volume
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.VolumesApi.ActivateVolume(context.Background(), repositoryName, volumeName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.ActivateVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**volumeName** | **string**| Name of the volume | 
+**repositoryName** | **string** | Name of the repository | 
+**volumeName** | **string** | Name of the volume | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiActivateVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -49,18 +85,55 @@ No authorization required
 
 ## CreateVolume
 
-> Volume CreateVolume(ctx, repositoryName, volume)
+> Volume CreateVolume(ctx, repositoryName).Volume(volume).Execute()
 
 Create new volume
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	volume := *openapiclient.NewVolume("Name_example", map[string]interface{}(123)) // Volume | New volume to create
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumesApi.CreateVolume(context.Background(), repositoryName).Volume(volume).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.CreateVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateVolume`: Volume
+	fmt.Fprintf(os.Stdout, "Response from `VolumesApi.CreateVolume`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**volume** | [**Volume**](Volume.md)| New volume to create | 
+**repositoryName** | **string** | Name of the repository | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **volume** | [**Volume**](Volume.md) | New volume to create | 
 
 ### Return type
 
@@ -82,18 +155,54 @@ No authorization required
 
 ## DeactivateVolume
 
-> DeactivateVolume(ctx, repositoryName, volumeName)
+> DeactivateVolume(ctx, repositoryName, volumeName).Execute()
 
 Deactivate a volume prior to its deletion (e.g. unmount)
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	volumeName := "volumeName_example" // string | Name of the volume
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.VolumesApi.DeactivateVolume(context.Background(), repositoryName, volumeName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.DeactivateVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**volumeName** | **string**| Name of the volume | 
+**repositoryName** | **string** | Name of the repository | 
+**volumeName** | **string** | Name of the volume | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeactivateVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -115,18 +224,54 @@ No authorization required
 
 ## DeleteVolume
 
-> DeleteVolume(ctx, repositoryName, volumeName)
+> DeleteVolume(ctx, repositoryName, volumeName).Execute()
 
 Remove a volume
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	volumeName := "volumeName_example" // string | Name of the volume
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.VolumesApi.DeleteVolume(context.Background(), repositoryName, volumeName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.DeleteVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**volumeName** | **string**| Name of the volume | 
+**repositoryName** | **string** | Name of the repository | 
+**volumeName** | **string** | Name of the volume | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -148,18 +293,56 @@ No authorization required
 
 ## GetVolume
 
-> Volume GetVolume(ctx, repositoryName, volumeName)
+> Volume GetVolume(ctx, repositoryName, volumeName).Execute()
 
 Get info for a volume
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	volumeName := "volumeName_example" // string | Name of the volume
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumesApi.GetVolume(context.Background(), repositoryName, volumeName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.GetVolume``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetVolume`: Volume
+	fmt.Fprintf(os.Stdout, "Response from `VolumesApi.GetVolume`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**volumeName** | **string**| Name of the volume | 
+**repositoryName** | **string** | Name of the repository | 
+**volumeName** | **string** | Name of the volume | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetVolumeRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -181,18 +364,56 @@ No authorization required
 
 ## GetVolumeStatus
 
-> VolumeStatus GetVolumeStatus(ctx, repositoryName, volumeName)
+> VolumeStatus GetVolumeStatus(ctx, repositoryName, volumeName).Execute()
 
 Get status of a volume
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	volumeName := "volumeName_example" // string | Name of the volume
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumesApi.GetVolumeStatus(context.Background(), repositoryName, volumeName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.GetVolumeStatus``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetVolumeStatus`: VolumeStatus
+	fmt.Fprintf(os.Stdout, "Response from `VolumesApi.GetVolumeStatus`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**volumeName** | **string**| Name of the volume | 
+**repositoryName** | **string** | Name of the repository | 
+**volumeName** | **string** | Name of the volume | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetVolumeStatusRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -214,17 +435,53 @@ No authorization required
 
 ## ListVolumes
 
-> []Volume ListVolumes(ctx, repositoryName)
+> []Volume ListVolumes(ctx, repositoryName).Execute()
 
 List volumes
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VolumesApi.ListVolumes(context.Background(), repositoryName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VolumesApi.ListVolumes``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListVolumes`: []Volume
+	fmt.Fprintf(os.Stdout, "Response from `VolumesApi.ListVolumes`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
+**repositoryName** | **string** | Name of the repository | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListVolumesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
