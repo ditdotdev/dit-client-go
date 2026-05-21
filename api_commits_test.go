@@ -15,7 +15,7 @@ const testErrorCodeNotFound = "NOT_FOUND"
 func newTestServer(handler http.HandlerFunc) (*httptest.Server, *APIClient) {
 	ts := httptest.NewServer(handler)
 	cfg := NewConfiguration()
-	cfg.BasePath = ts.URL
+	cfg.Servers = ServerConfigurations{{URL: ts.URL}}
 	client := NewAPIClient(cfg)
 	return ts, client
 }
@@ -31,7 +31,6 @@ func TestGetCommit_Success(t *testing.T) {
 	}
 
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		// Verify request method and path
 		if r.Method != http.MethodGet {
 			t.Errorf("expected GET, got %s", r.Method)
 		}
@@ -45,7 +44,7 @@ func TestGetCommit_Success(t *testing.T) {
 	})
 	defer ts.Close()
 
-	result, resp, err := client.CommitsApi.GetCommit(context.Background(), "myrepo", "abc123")
+	result, resp, err := client.CommitsApi.GetCommit(context.Background(), "myrepo", "abc123").Execute()
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -59,7 +58,7 @@ func TestGetCommit_Success(t *testing.T) {
 
 func TestGetCommit_NotFound(t *testing.T) {
 	apiErr := ApiError{
-		Code:    testErrorCodeNotFound,
+		Code:    PtrString(testErrorCodeNotFound),
 		Message: "Commit not found",
 	}
 
@@ -70,7 +69,7 @@ func TestGetCommit_NotFound(t *testing.T) {
 	})
 	defer ts.Close()
 
-	_, resp, err := client.CommitsApi.GetCommit(context.Background(), "myrepo", "nonexistent")
+	_, resp, err := client.CommitsApi.GetCommit(context.Background(), "myrepo", "nonexistent").Execute()
 	if err == nil {
 		t.Fatal("expected error for 404 response")
 	}
@@ -78,17 +77,16 @@ func TestGetCommit_NotFound(t *testing.T) {
 		t.Errorf("expected status 404, got %d", resp.StatusCode)
 	}
 
-	// Verify error is a GenericOpenAPIError and contains the model
-	openAPIErr, ok := err.(GenericOpenAPIError)
+	openAPIErr, ok := err.(*GenericOpenAPIError)
 	if !ok {
-		t.Fatal("expected GenericOpenAPIError type")
+		t.Fatalf("expected *GenericOpenAPIError type, got %T", err)
 	}
 	model, ok := openAPIErr.Model().(ApiError)
 	if !ok {
 		t.Fatal("expected ApiError model in error")
 	}
-	if model.Code != testErrorCodeNotFound {
-		t.Errorf("expected error code NOT_FOUND, got %q", model.Code)
+	if model.GetCode() != testErrorCodeNotFound {
+		t.Errorf("expected error code NOT_FOUND, got %q", model.GetCode())
 	}
 }
 
@@ -97,13 +95,13 @@ func TestGetCommit_ServerError(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    "INTERNAL_ERROR",
+			Code:    PtrString("INTERNAL_ERROR"),
 			Message: "server blew up",
 		})
 	})
 	defer ts.Close()
 
-	_, resp, err := client.CommitsApi.GetCommit(context.Background(), "myrepo", "abc123")
+	_, resp, err := client.CommitsApi.GetCommit(context.Background(), "myrepo", "abc123").Execute()
 	if err == nil {
 		t.Fatal("expected error for 500 response")
 	}
@@ -118,7 +116,6 @@ func TestGetCommit_ServerError(t *testing.T) {
 
 func TestCreateCommit_Success(t *testing.T) {
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		// Verify request method
 		if r.Method != http.MethodPost {
 			t.Errorf("expected POST, got %s", r.Method)
 		}
@@ -126,12 +123,10 @@ func TestCreateCommit_Success(t *testing.T) {
 			t.Errorf("unexpected path: %s", r.URL.Path)
 		}
 
-		// Verify Content-Type
 		if ct := r.Header.Get("Content-Type"); !strings.Contains(ct, "application/json") {
 			t.Errorf("expected application/json Content-Type, got %q", ct)
 		}
 
-		// Decode request body
 		var incoming Commit
 		if err := json.NewDecoder(r.Body).Decode(&incoming); err != nil {
 			t.Fatalf("failed to decode request body: %v", err)
@@ -140,7 +135,6 @@ func TestCreateCommit_Success(t *testing.T) {
 			t.Errorf("expected commit id new-commit in body, got %q", incoming.Id)
 		}
 
-		// Return created commit
 		response := Commit{
 			Id:         "new-commit",
 			Properties: map[string]interface{}{"created": true},
@@ -156,7 +150,7 @@ func TestCreateCommit_Success(t *testing.T) {
 		Properties: map[string]interface{}{},
 	}
 
-	result, resp, err := client.CommitsApi.CreateCommit(context.Background(), "myrepo", input)
+	result, resp, err := client.CommitsApi.CreateCommit(context.Background(), "myrepo").Commit(input).Execute()
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -173,14 +167,14 @@ func TestCreateCommit_NotFound(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    testErrorCodeNotFound,
+			Code:    PtrString(testErrorCodeNotFound),
 			Message: "repository not found",
 		})
 	})
 	defer ts.Close()
 
 	input := Commit{Id: "test", Properties: map[string]interface{}{}}
-	_, resp, err := client.CommitsApi.CreateCommit(context.Background(), "nonexistent", input)
+	_, resp, err := client.CommitsApi.CreateCommit(context.Background(), "nonexistent").Commit(input).Execute()
 	if err == nil {
 		t.Fatal("expected error for 404 response")
 	}
@@ -189,24 +183,38 @@ func TestCreateCommit_NotFound(t *testing.T) {
 	}
 }
 
-func TestCreateCommit_Unauthorized(t *testing.T) {
+func TestCreateCommit_BadRequest(t *testing.T) {
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusUnauthorized)
+		w.WriteHeader(http.StatusBadRequest)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    "UNAUTHORIZED",
-			Message: "authentication required",
+			Code:    PtrString("BAD_INPUT"),
+			Message: "malformed commit",
 		})
 	})
 	defer ts.Close()
 
 	input := Commit{Id: "test", Properties: map[string]interface{}{}}
-	_, resp, err := client.CommitsApi.CreateCommit(context.Background(), "myrepo", input)
+	_, resp, err := client.CommitsApi.CreateCommit(context.Background(), "myrepo").Commit(input).Execute()
 	if err == nil {
-		t.Fatal("expected error for 401 response")
+		t.Fatal("expected error for 400 response")
 	}
-	if resp.StatusCode != 401 {
-		t.Errorf("expected status 401, got %d", resp.StatusCode)
+	if resp.StatusCode != 400 {
+		t.Errorf("expected status 400, got %d", resp.StatusCode)
+	}
+}
+
+func TestCreateCommit_MissingBody(t *testing.T) {
+	cfg := NewConfiguration()
+	cfg.Servers = ServerConfigurations{{URL: "http://localhost:0"}}
+	client := NewAPIClient(cfg)
+
+	_, _, err := client.CommitsApi.CreateCommit(context.Background(), "myrepo").Execute()
+	if err == nil {
+		t.Fatal("expected error when commit body is not provided")
+	}
+	if !strings.Contains(err.Error(), "commit is required") {
+		t.Errorf("expected 'commit is required' error, got %q", err.Error())
 	}
 }
 
@@ -216,7 +224,6 @@ func TestCreateCommit_Unauthorized(t *testing.T) {
 
 func TestDeleteCommit_Success(t *testing.T) {
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		// Verify request method
 		if r.Method != http.MethodDelete {
 			t.Errorf("expected DELETE, got %s", r.Method)
 		}
@@ -228,7 +235,7 @@ func TestDeleteCommit_Success(t *testing.T) {
 	})
 	defer ts.Close()
 
-	resp, err := client.CommitsApi.DeleteCommit(context.Background(), "myrepo", "commit-to-delete")
+	resp, err := client.CommitsApi.DeleteCommit(context.Background(), "myrepo", "commit-to-delete").Execute()
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -242,13 +249,13 @@ func TestDeleteCommit_NotFound(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    testErrorCodeNotFound,
+			Code:    PtrString(testErrorCodeNotFound),
 			Message: "commit not found",
 		})
 	})
 	defer ts.Close()
 
-	resp, err := client.CommitsApi.DeleteCommit(context.Background(), "myrepo", "nonexistent")
+	resp, err := client.CommitsApi.DeleteCommit(context.Background(), "myrepo", "nonexistent").Execute()
 	if err == nil {
 		t.Fatal("expected error for 404 response")
 	}
@@ -256,16 +263,16 @@ func TestDeleteCommit_NotFound(t *testing.T) {
 		t.Errorf("expected status 404, got %d", resp.StatusCode)
 	}
 
-	openAPIErr, ok := err.(GenericOpenAPIError)
+	openAPIErr, ok := err.(*GenericOpenAPIError)
 	if !ok {
-		t.Fatal("expected GenericOpenAPIError type")
+		t.Fatalf("expected *GenericOpenAPIError type, got %T", err)
 	}
 	model, ok := openAPIErr.Model().(ApiError)
 	if !ok {
 		t.Fatal("expected ApiError model in error")
 	}
-	if model.Code != testErrorCodeNotFound {
-		t.Errorf("expected error code NOT_FOUND, got %q", model.Code)
+	if model.GetCode() != testErrorCodeNotFound {
+		t.Errorf("expected error code NOT_FOUND, got %q", model.GetCode())
 	}
 }
 
@@ -274,13 +281,13 @@ func TestDeleteCommit_ServerError(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
 		_ = json.NewEncoder(w).Encode(ApiError{
-			Code:    "INTERNAL_ERROR",
+			Code:    PtrString("INTERNAL_ERROR"),
 			Message: "unexpected error",
 		})
 	})
 	defer ts.Close()
 
-	resp, err := client.CommitsApi.DeleteCommit(context.Background(), "myrepo", "abc123")
+	resp, err := client.CommitsApi.DeleteCommit(context.Background(), "myrepo", "abc123").Execute()
 	if err == nil {
 		t.Fatal("expected error for 500 response")
 	}
@@ -290,7 +297,7 @@ func TestDeleteCommit_ServerError(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
-// Verify request headers and user agent
+// Request headers
 // ---------------------------------------------------------------------------
 
 func TestAPIRequest_UserAgentHeader(t *testing.T) {
@@ -301,11 +308,11 @@ func TestAPIRequest_UserAgentHeader(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(Commit{Id: "test"})
+		_ = json.NewEncoder(w).Encode(Commit{Id: "test", Properties: map[string]interface{}{}})
 	})
 	defer ts.Close()
 
-	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "repo", "id")
+	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "repo", "id").Execute()
 }
 
 func TestAPIRequest_AcceptHeader(t *testing.T) {
@@ -316,11 +323,11 @@ func TestAPIRequest_AcceptHeader(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(Commit{Id: "test"})
+		_ = json.NewEncoder(w).Encode(Commit{Id: "test", Properties: map[string]interface{}{}})
 	})
 	defer ts.Close()
 
-	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "repo", "id")
+	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "repo", "id").Execute()
 }
 
 func TestAPIRequest_CustomDefaultHeader(t *testing.T) {
@@ -331,54 +338,42 @@ func TestAPIRequest_CustomDefaultHeader(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(Commit{Id: "test"})
+		_ = json.NewEncoder(w).Encode(Commit{Id: "test", Properties: map[string]interface{}{}})
 	})
 	defer ts.Close()
 
 	client.GetConfig().AddDefaultHeader("X-Custom-Header", "custom-value")
-	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "repo", "id")
+	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "repo", "id").Execute()
 }
 
 // ---------------------------------------------------------------------------
-// Context-based authentication
+// Per-request server override via context
 // ---------------------------------------------------------------------------
 
-func TestAPIRequest_BearerTokenAuth(t *testing.T) {
+func TestAPIRequest_ServerIndexOverride(t *testing.T) {
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		auth := r.Header.Get("Authorization")
-		if auth != "Bearer my-token" {
-			t.Errorf("expected Bearer my-token, got %q", auth)
-		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(Commit{Id: "test"})
+		_ = json.NewEncoder(w).Encode(Commit{Id: "from-secondary", Properties: map[string]interface{}{}})
 	})
 	defer ts.Close()
 
-	ctx := context.WithValue(context.Background(), ContextAccessToken, "my-token")
-	_, _, _ = client.CommitsApi.GetCommit(ctx, "repo", "id")
-}
+	// Configure a primary server pointing to a dead address and a secondary
+	// server pointing at the test httptest server. With ContextServerIndex=1,
+	// the request must route to the secondary.
+	client.GetConfig().Servers = ServerConfigurations{
+		{URL: "http://127.0.0.1:1"},
+		{URL: ts.URL},
+	}
 
-func TestAPIRequest_BasicAuth(t *testing.T) {
-	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		user, pass, ok := r.BasicAuth()
-		if !ok {
-			t.Error("expected basic auth to be set")
-		}
-		if user != "admin" || pass != "secret" {
-			t.Errorf("expected admin:secret, got %s:%s", user, pass)
-		}
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(Commit{Id: "test"})
-	})
-	defer ts.Close()
-
-	ctx := context.WithValue(context.Background(), ContextBasicAuth, BasicAuth{
-		UserName: "admin",
-		Password: "secret",
-	})
-	_, _, _ = client.CommitsApi.GetCommit(ctx, "repo", "id")
+	ctx := context.WithValue(context.Background(), ContextServerIndex, 1)
+	result, _, err := client.CommitsApi.GetCommit(ctx, "repo", "id").Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if result.Id != "from-secondary" {
+		t.Errorf("expected response from secondary server, got %q", result.Id)
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -387,26 +382,23 @@ func TestAPIRequest_BasicAuth(t *testing.T) {
 
 func TestAPIRequest_PathParameterEncoding(t *testing.T) {
 	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
-		// parameterToString + QueryEscape encodes spaces as "+" and "/" as "%2F"
-		// The raw path should contain these encoded values
 		path := r.URL.RawPath
 		if path == "" {
 			path = r.URL.Path
 		}
-		if !strings.Contains(path, "my+repo") {
-			t.Errorf("expected 'my+repo' in path, got %q", path)
+		if !strings.Contains(path, "my%20repo") {
+			t.Errorf("expected 'my%%20repo' in path (PathEscape), got %q", path)
 		}
 		if !strings.Contains(path, "commit%2F1") {
-			// Go's HTTP server may decode the path, check URL.Path as fallback
 			if !strings.Contains(r.URL.Path, "commit/1") {
 				t.Errorf("expected 'commit%%2F1' or 'commit/1' in path, got raw=%q decoded=%q", r.URL.RawPath, r.URL.Path)
 			}
 		}
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(Commit{Id: "test"})
+		_ = json.NewEncoder(w).Encode(Commit{Id: "test", Properties: map[string]interface{}{}})
 	})
 	defer ts.Close()
 
-	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "my repo", "commit/1")
+	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "my repo", "commit/1").Execute()
 }

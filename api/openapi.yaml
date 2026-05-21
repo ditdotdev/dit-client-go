@@ -1,10 +1,40 @@
 openapi: 3.0.2
 info:
-  description: API used by the Datadatdat CLI
+  contact:
+    name: Datadatdat
+    url: https://github.com/datadatdat
+  description: |
+    REST API exposed by the local `datadatdat-server` Docker container and
+    consumed by the Datadatdat CLI (`d3`) and other in-process clients.
+
+    The server listens on a loopback port only and is **not intended for
+    remote use**; there is no authentication, authorization, or transport
+    security. For multi-tenant or cross-host scenarios, deploy the separate
+    `datadatdat-remote-server` instead, which fronts this API with auth.
+
+    Operation IDs follow `verbResource` naming (e.g. `listRepositories`,
+    `createCommit`) and map 1:1 to generated client methods.
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
   title: Datadatdat API
-  version: 0.3.0
+  version: 1.0.0
 servers:
-- url: http://localhost:5001
+- description: Local Datadatdat server (default)
+  url: http://localhost:5001
+tags:
+- description: Current execution context (active provider and its settings).
+  name: contexts
+- description: Versioned collections of related volumes.
+  name: repositories
+- description: Mountable filesystems owned by a repository.
+  name: volumes
+- description: Point-in-time snapshots of a repository's volumes.
+  name: commits
+- description: Externally-hosted endpoints for pushing and pulling commits.
+  name: remotes
+- description: Long-running push/pull jobs and their progress.
+  name: operations
 paths:
   /v1/context:
     get:
@@ -56,7 +86,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/repository"
           description: Newly created repository
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -159,7 +189,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/repository"
           description: Updated repository
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -275,7 +305,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/volume"
           description: Newly created volume
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -564,7 +594,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/commit"
           description: Newly created commit
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -853,7 +883,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/remote"
           description: Newly created remote
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -986,7 +1016,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/remote"
           description: Remote information
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -1054,7 +1084,7 @@ paths:
                   $ref: "#/components/schemas/commit"
                 type: array
           description: List of commits
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -1118,7 +1148,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/commit"
           description: Remote commit
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -1326,7 +1356,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/operation"
           description: New operation
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -1397,7 +1427,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/operation"
           description: New operation
-        "401":
+        "400":
           content:
             application/json:
               schema:
@@ -1739,7 +1769,9 @@ components:
           description: Client-specific properties
           type: object
         config:
-          description: Server-generated configuration
+          description: Server-generated configuration. Populated by the server on
+            read; ignored on write.
+          readOnly: true
           type: object
       required:
       - name
@@ -1769,7 +1801,7 @@ components:
           description: Client-specific properties
           type: object
         ready:
-          description: True if the volume is ready for use in a runtime environmemnt
+          description: True if the volume is ready for use in a runtime environment
           type: boolean
         error:
           description: Optional error message if volume asynchronously failed to be

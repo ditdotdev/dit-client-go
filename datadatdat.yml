@@ -1,10 +1,44 @@
 openapi: 3.0.2
 info:
   title: Datadatdat API
-  description: API used by the Datadatdat CLI
-  version: 0.3.0
+  description: |
+    REST API exposed by the local `datadatdat-server` Docker container and
+    consumed by the Datadatdat CLI (`d3`) and other in-process clients.
+
+    The server listens on a loopback port only and is **not intended for
+    remote use**; there is no authentication, authorization, or transport
+    security. For multi-tenant or cross-host scenarios, deploy the separate
+    `datadatdat-remote-server` instead, which fronts this API with auth.
+
+    Operation IDs follow `verbResource` naming (e.g. `listRepositories`,
+    `createCommit`) and map 1:1 to generated client methods.
+  version: 1.0.0
+  contact:
+    name: Datadatdat
+    url: https://github.com/datadatdat
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
   - url: http://localhost:5001
+    description: Local Datadatdat server (default)
+# This API is intentionally unauthenticated: it listens on loopback only and
+# is consumed by clients running on the same host. Declaring an empty
+# security requirement makes that explicit to spec consumers and tooling.
+security: []
+tags:
+  - name: contexts
+    description: Current execution context (active provider and its settings).
+  - name: repositories
+    description: Versioned collections of related volumes.
+  - name: volumes
+    description: Mountable filesystems owned by a repository.
+  - name: commits
+    description: Point-in-time snapshots of a repository's volumes.
+  - name: remotes
+    description: Externally-hosted endpoints for pushing and pulling commits.
+  - name: operations
+    description: Long-running push/pull jobs and their progress.
 paths:
 
   #
@@ -63,7 +97,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/repository"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         default:
           $ref: "#/components/responses/apiError"
@@ -105,7 +139,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/repository"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -186,7 +220,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/volume"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -322,7 +356,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/commit"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -463,7 +497,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/remote"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -509,7 +543,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/remote"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -549,7 +583,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/commit"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -573,7 +607,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/commit"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -692,7 +726,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/operation"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -724,7 +758,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/operation"
-        "401":
+        "400":
           $ref: "#/components/responses/badInput"
         "404":
           $ref: "#/components/responses/noSuchObject"
@@ -918,7 +952,8 @@ components:
           description: Client-specific properties
         config:
           type: object
-          description: Server-generated configuration
+          readOnly: true
+          description: Server-generated configuration. Populated by the server on read; ignored on write.
       required:
         - name
         - properties
@@ -941,7 +976,7 @@ components:
           description: Client-specific properties
         ready:
           type: boolean
-          description: True if the volume is ready for use in a runtime environmemnt
+          description: True if the volume is ready for use in a runtime environment
         error:
           type: string
           description: Optional error message if volume asynchronously failed to be created

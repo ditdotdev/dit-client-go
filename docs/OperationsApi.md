@@ -15,17 +15,51 @@ Method | HTTP request | Description
 
 ## AbortOperation
 
-> AbortOperation(ctx, operationId)
+> AbortOperation(ctx, operationId).Execute()
 
 Abort operation
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	operationId := "operationId_example" // string | Operation identifier
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.OperationsApi.AbortOperation(context.Background(), operationId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OperationsApi.AbortOperation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**operationId** | **string**| Operation identifier | 
+**operationId** | **string** | Operation identifier | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiAbortOperationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -47,17 +81,53 @@ No authorization required
 
 ## GetOperation
 
-> Operation GetOperation(ctx, operationId)
+> Operation GetOperation(ctx, operationId).Execute()
 
 Get operation
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	operationId := "operationId_example" // string | Operation identifier
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OperationsApi.GetOperation(context.Background(), operationId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OperationsApi.GetOperation``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetOperation`: Operation
+	fmt.Fprintf(os.Stdout, "Response from `OperationsApi.GetOperation`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**operationId** | **string**| Operation identifier | 
+**operationId** | **string** | Operation identifier | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetOperationRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -79,28 +149,55 @@ No authorization required
 
 ## GetOperationProgress
 
-> []ProgressEntry GetOperationProgress(ctx, operationId, optional)
+> []ProgressEntry GetOperationProgress(ctx, operationId).LastId(lastId).Execute()
 
 Get operation progress
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	operationId := "operationId_example" // string | Operation identifier
+	lastId := int32(56) // int32 |  (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OperationsApi.GetOperationProgress(context.Background(), operationId).LastId(lastId).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OperationsApi.GetOperationProgress``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetOperationProgress`: []ProgressEntry
+	fmt.Fprintf(os.Stdout, "Response from `OperationsApi.GetOperationProgress`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**operationId** | **string**| Operation identifier | 
- **optional** | ***GetOperationProgressOpts** | optional parameters | nil if no parameters
+**operationId** | **string** | Operation identifier | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a GetOperationProgressOpts struct
+Other parameters are passed through a pointer to a apiGetOperationProgressRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
- **lastId** | ***int32** |  | 
+ **lastId** | **int32** |  | 
 
 ### Return type
 
@@ -122,26 +219,49 @@ No authorization required
 
 ## ListOperations
 
-> []Operation ListOperations(ctx, optional)
+> []Operation ListOperations(ctx).Repository(repository).Execute()
 
 List operations
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repository := "repository_example" // string | Limit to the given repository (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OperationsApi.ListOperations(context.Background()).Repository(repository).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OperationsApi.ListOperations``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListOperations`: []Operation
+	fmt.Fprintf(os.Stdout, "Response from `OperationsApi.ListOperations`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListOperationsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
-**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
- **optional** | ***ListOperationsOpts** | optional parameters | nil if no parameters
-
-### Optional Parameters
-
-Optional parameters are passed through a pointer to a ListOperationsOpts struct
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **repository** | ***string** | Limit to the given repository | 
+ **repository** | **string** | Limit to the given repository | 
 
 ### Return type
 
@@ -163,25 +283,54 @@ No authorization required
 
 ## Pull
 
-> Operation Pull(ctx, repositoryName, remoteName, commitId, remoteParameters, optional)
+> Operation Pull(ctx, repositoryName, remoteName, commitId).RemoteParameters(remoteParameters).MetadataOnly(metadataOnly).Execute()
 
 Start a pull operation
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+	commitId := "commitId_example" // string | Commit identifier
+	remoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Provider specific parameters
+	metadataOnly := true // bool | Transfer only tag metadata (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OperationsApi.Pull(context.Background(), repositoryName, remoteName, commitId).RemoteParameters(remoteParameters).MetadataOnly(metadataOnly).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OperationsApi.Pull``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `Pull`: Operation
+	fmt.Fprintf(os.Stdout, "Response from `OperationsApi.Pull`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
-**commitId** | **string**| Commit identifier | 
-**remoteParameters** | [**RemoteParameters**](RemoteParameters.md)| Provider specific parameters | 
- **optional** | ***PullOpts** | optional parameters | nil if no parameters
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
+**commitId** | **string** | Commit identifier | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a PullOpts struct
+Other parameters are passed through a pointer to a apiPullRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -189,8 +338,8 @@ Name | Type | Description  | Notes
 
 
 
-
- **metadataOnly** | ***bool** | Transfer only tag metadata | 
+ **remoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Provider specific parameters | 
+ **metadataOnly** | **bool** | Transfer only tag metadata | 
 
 ### Return type
 
@@ -212,25 +361,54 @@ No authorization required
 
 ## Push
 
-> Operation Push(ctx, repositoryName, remoteName, commitId, remoteParameters, optional)
+> Operation Push(ctx, repositoryName, remoteName, commitId).RemoteParameters(remoteParameters).MetadataOnly(metadataOnly).Execute()
 
 Start a push operation
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+	commitId := "commitId_example" // string | Commit identifier
+	remoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Provider specific parameters
+	metadataOnly := true // bool | Transfer only tag metadata (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.OperationsApi.Push(context.Background(), repositoryName, remoteName, commitId).RemoteParameters(remoteParameters).MetadataOnly(metadataOnly).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `OperationsApi.Push``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `Push`: Operation
+	fmt.Fprintf(os.Stdout, "Response from `OperationsApi.Push`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
-**commitId** | **string**| Commit identifier | 
-**remoteParameters** | [**RemoteParameters**](RemoteParameters.md)| Provider specific parameters | 
- **optional** | ***PushOpts** | optional parameters | nil if no parameters
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
+**commitId** | **string** | Commit identifier | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a PushOpts struct
+Other parameters are passed through a pointer to a apiPushRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
@@ -238,8 +416,8 @@ Name | Type | Description  | Notes
 
 
 
-
- **metadataOnly** | ***bool** | Transfer only tag metadata | 
+ **remoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Provider specific parameters | 
+ **metadataOnly** | **bool** | Transfer only tag metadata | 
 
 ### Return type
 

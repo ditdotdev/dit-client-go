@@ -16,18 +16,55 @@ Method | HTTP request | Description
 
 ## CreateRemote
 
-> Remote CreateRemote(ctx, repositoryName, remote)
+> Remote CreateRemote(ctx, repositoryName).Remote(remote).Execute()
 
 Create new remote
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remote := *openapiclient.NewRemote("Provider_example", "Name_example", map[string]interface{}(123)) // Remote | Remote to create
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RemotesApi.CreateRemote(context.Background(), repositoryName).Remote(remote).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.CreateRemote``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CreateRemote`: Remote
+	fmt.Fprintf(os.Stdout, "Response from `RemotesApi.CreateRemote`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remote** | [**Remote**](Remote.md)| Remote to create | 
+**repositoryName** | **string** | Name of the repository | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCreateRemoteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+ **remote** | [**Remote**](Remote.md) | Remote to create | 
 
 ### Return type
 
@@ -49,18 +86,54 @@ No authorization required
 
 ## DeleteRemote
 
-> DeleteRemote(ctx, repositoryName, remoteName)
+> DeleteRemote(ctx, repositoryName, remoteName).Execute()
 
 Delete remote
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	r, err := apiClient.RemotesApi.DeleteRemote(context.Background(), repositoryName, remoteName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.DeleteRemote``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiDeleteRemoteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -82,18 +155,56 @@ No authorization required
 
 ## GetRemote
 
-> Remote GetRemote(ctx, repositoryName, remoteName)
+> Remote GetRemote(ctx, repositoryName, remoteName).Execute()
 
 Get information about a particular remote
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RemotesApi.GetRemote(context.Background(), repositoryName, remoteName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.GetRemote``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetRemote`: Remote
+	fmt.Fprintf(os.Stdout, "Response from `RemotesApi.GetRemote`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetRemoteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
 
 ### Return type
 
@@ -115,20 +226,61 @@ No authorization required
 
 ## GetRemoteCommit
 
-> Commit GetRemoteCommit(ctx, repositoryName, remoteName, commitId, datadatdatRemoteParameters)
+> Commit GetRemoteCommit(ctx, repositoryName, remoteName, commitId).DatadatdatRemoteParameters(datadatdatRemoteParameters).Execute()
 
 Get a remote commit
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+	commitId := "commitId_example" // string | Commit identifier
+	datadatdatRemoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Remote-specific parameters
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RemotesApi.GetRemoteCommit(context.Background(), repositoryName, remoteName, commitId).DatadatdatRemoteParameters(datadatdatRemoteParameters).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.GetRemoteCommit``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `GetRemoteCommit`: Commit
+	fmt.Fprintf(os.Stdout, "Response from `RemotesApi.GetRemoteCommit`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
-**commitId** | **string**| Commit identifier | 
-**datadatdatRemoteParameters** | [**RemoteParameters**](.md)| Remote-specific parameters | 
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
+**commitId** | **string** | Commit identifier | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiGetRemoteCommitRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+
+ **datadatdatRemoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Remote-specific parameters | 
 
 ### Return type
 
@@ -150,32 +302,60 @@ No authorization required
 
 ## ListRemoteCommits
 
-> []Commit ListRemoteCommits(ctx, repositoryName, remoteName, datadatdatRemoteParameters, optional)
+> []Commit ListRemoteCommits(ctx, repositoryName, remoteName).DatadatdatRemoteParameters(datadatdatRemoteParameters).Tag(tag).Execute()
 
 List remote commits
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+	datadatdatRemoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Remote-specific parameters
+	tag := []string{"Inner_example"} // []string | Tags (name or name=value) to search for (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RemotesApi.ListRemoteCommits(context.Background(), repositoryName, remoteName).DatadatdatRemoteParameters(datadatdatRemoteParameters).Tag(tag).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.ListRemoteCommits``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListRemoteCommits`: []Commit
+	fmt.Fprintf(os.Stdout, "Response from `RemotesApi.ListRemoteCommits`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
-**datadatdatRemoteParameters** | [**RemoteParameters**](.md)| Remote-specific parameters | 
- **optional** | ***ListRemoteCommitsOpts** | optional parameters | nil if no parameters
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
 
-### Optional Parameters
+### Other Parameters
 
-Optional parameters are passed through a pointer to a ListRemoteCommitsOpts struct
+Other parameters are passed through a pointer to a apiListRemoteCommitsRequest struct via the builder pattern
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
-
- **tag** | ***[]string** | Tags (name or name&#x3D;value) to search for | 
+ **datadatdatRemoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Remote-specific parameters | 
+ **tag** | **[]string** | Tags (name or name&#x3D;value) to search for | 
 
 ### Return type
 
@@ -197,17 +377,53 @@ No authorization required
 
 ## ListRemotes
 
-> []Remote ListRemotes(ctx, repositoryName)
+> []Remote ListRemotes(ctx, repositoryName).Execute()
 
 Get list of remotes
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RemotesApi.ListRemotes(context.Background(), repositoryName).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.ListRemotes``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `ListRemotes`: []Remote
+	fmt.Fprintf(os.Stdout, "Response from `RemotesApi.ListRemotes`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
+**repositoryName** | **string** | Name of the repository | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiListRemotesRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
 
 ### Return type
 
@@ -229,19 +445,58 @@ No authorization required
 
 ## UpdateRemote
 
-> Remote UpdateRemote(ctx, repositoryName, remoteName, remote)
+> Remote UpdateRemote(ctx, repositoryName, remoteName).Remote(remote).Execute()
 
 Update remote information
 
-### Required Parameters
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/datadatdat/datadatdat-client-go"
+)
+
+func main() {
+	repositoryName := "repositoryName_example" // string | Name of the repository
+	remoteName := "remoteName_example" // string | Name of the remote
+	remote := *openapiclient.NewRemote("Provider_example", "Name_example", map[string]interface{}(123)) // Remote | Remote information to update
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.RemotesApi.UpdateRemote(context.Background(), repositoryName, remoteName).Remote(remote).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.UpdateRemote``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `UpdateRemote`: Remote
+	fmt.Fprintf(os.Stdout, "Response from `RemotesApi.UpdateRemote`: %v\n", resp)
+}
+```
+
+### Path Parameters
 
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**repositoryName** | **string**| Name of the repository | 
-**remoteName** | **string**| Name of the remote | 
-**remote** | [**Remote**](Remote.md)| Remote information to update | 
+**repositoryName** | **string** | Name of the repository | 
+**remoteName** | **string** | Name of the remote | 
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiUpdateRemoteRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+
+
+ **remote** | [**Remote**](Remote.md) | Remote information to update | 
 
 ### Return type
 
