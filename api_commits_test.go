@@ -402,3 +402,203 @@ func TestAPIRequest_PathParameterEncoding(t *testing.T) {
 
 	_, _, _ = client.CommitsApi.GetCommit(context.Background(), "my repo", "commit/1").Execute()
 }
+
+// ---------------------------------------------------------------------------
+// ListCommits
+// ---------------------------------------------------------------------------
+
+func TestListCommits_Success(t *testing.T) {
+	want := []Commit{
+		{Id: "c1", Properties: map[string]interface{}{}},
+		{Id: "c2", Properties: map[string]interface{}{}},
+	}
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if !strings.Contains(r.URL.Path, "/v1/repositories/alpha/commits") {
+			t.Errorf("unexpected path: %s", r.URL.Path)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(want)
+	})
+	defer ts.Close()
+
+	got, _, err := client.CommitsApi.ListCommits(context.Background(), "alpha").Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(got) != 2 {
+		t.Errorf("expected 2 commits, got %d", len(got))
+	}
+}
+
+func TestListCommits_WithTagFilter(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if got := r.URL.Query()["tag"]; len(got) != 2 || got[0] != "production" || got[1] != "v1" {
+			t.Errorf("expected tag=production&tag=v1, got %v", got)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode([]Commit{})
+	})
+	defer ts.Close()
+
+	_, _, err := client.CommitsApi.ListCommits(context.Background(), "alpha").
+		Tag([]string{"production", "v1"}).
+		Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+}
+
+func TestListCommits_NotFound(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		_ = json.NewEncoder(w).Encode(ApiError{Message: "missing"})
+	})
+	defer ts.Close()
+
+	_, resp, err := client.CommitsApi.ListCommits(context.Background(), "ghost").Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if resp.StatusCode != 404 {
+		t.Errorf("expected 404, got %d", resp.StatusCode)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// UpdateCommit
+// ---------------------------------------------------------------------------
+
+func TestUpdateCommit_Success(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("expected POST, got %s", r.Method)
+		}
+		var in Commit
+		_ = json.NewDecoder(r.Body).Decode(&in)
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(in)
+	})
+	defer ts.Close()
+
+	in := Commit{Id: "abc", Properties: map[string]interface{}{"tag": "v2"}}
+	got, _, err := client.CommitsApi.UpdateCommit(context.Background(), "alpha", "abc").Commit(in).Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got.Id != "abc" {
+		t.Errorf("expected abc, got %q", got.Id)
+	}
+}
+
+func TestUpdateCommit_MissingBody(t *testing.T) {
+	cfg := NewConfiguration()
+	cfg.Servers = ServerConfigurations{{URL: "http://127.0.0.1:0"}}
+	client := NewAPIClient(cfg)
+
+	_, _, err := client.CommitsApi.UpdateCommit(context.Background(), "alpha", "abc").Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+}
+
+func TestUpdateCommit_NotFound(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		_ = json.NewEncoder(w).Encode(ApiError{Message: "missing"})
+	})
+	defer ts.Close()
+
+	in := Commit{Id: "abc", Properties: map[string]interface{}{}}
+	_, resp, err := client.CommitsApi.UpdateCommit(context.Background(), "alpha", "ghost").Commit(in).Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if resp.StatusCode != 404 {
+		t.Errorf("expected 404, got %d", resp.StatusCode)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// GetCommitStatus
+// ---------------------------------------------------------------------------
+
+func TestGetCommitStatus_Success(t *testing.T) {
+	want := CommitStatus{LogicalSize: 100, ActualSize: 80, UniqueSize: 60, Ready: true}
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if !strings.HasSuffix(r.URL.Path, "/status") {
+			t.Errorf("unexpected path: %s", r.URL.Path)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(want)
+	})
+	defer ts.Close()
+
+	got, _, err := client.CommitsApi.GetCommitStatus(context.Background(), "alpha", "abc").Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if !got.Ready {
+		t.Error("expected Ready=true")
+	}
+}
+
+func TestGetCommitStatus_NotFound(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		_ = json.NewEncoder(w).Encode(ApiError{Message: "missing"})
+	})
+	defer ts.Close()
+
+	_, resp, err := client.CommitsApi.GetCommitStatus(context.Background(), "alpha", "ghost").Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if resp.StatusCode != 404 {
+		t.Errorf("expected 404, got %d", resp.StatusCode)
+	}
+}
+
+// ---------------------------------------------------------------------------
+// CheckoutCommit
+// ---------------------------------------------------------------------------
+
+func TestCheckoutCommit_Success(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("expected POST, got %s", r.Method)
+		}
+		if !strings.HasSuffix(r.URL.Path, "/checkout") {
+			t.Errorf("unexpected path: %s", r.URL.Path)
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+	defer ts.Close()
+
+	resp, err := client.CommitsApi.CheckoutCommit(context.Background(), "alpha", "abc").Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if resp.StatusCode != 204 {
+		t.Errorf("expected 204, got %d", resp.StatusCode)
+	}
+}
+
+func TestCheckoutCommit_NotFound(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		_ = json.NewEncoder(w).Encode(ApiError{Message: "missing"})
+	})
+	defer ts.Close()
+
+	resp, err := client.CommitsApi.CheckoutCommit(context.Background(), "alpha", "ghost").Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if resp.StatusCode != 404 {
+		t.Errorf("expected 404, got %d", resp.StatusCode)
+	}
+}
