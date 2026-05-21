@@ -7,8 +7,8 @@ Method | HTTP request | Description
 [**CreateRemote**](RemotesApi.md#CreateRemote) | **Post** /v1/repositories/{repositoryName}/remotes | Create new remote
 [**DeleteRemote**](RemotesApi.md#DeleteRemote) | **Delete** /v1/repositories/{repositoryName}/remotes/{remoteName} | Delete remote
 [**GetRemote**](RemotesApi.md#GetRemote) | **Get** /v1/repositories/{repositoryName}/remotes/{remoteName} | Get information about a particular remote
-[**GetRemoteCommit**](RemotesApi.md#GetRemoteCommit) | **Get** /v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId} | Get a remote commit
-[**ListRemoteCommits**](RemotesApi.md#ListRemoteCommits) | **Get** /v1/repositories/{repositoryName}/remotes/{remoteName}/commits | List remote commits
+[**GetRemoteCommit**](RemotesApi.md#GetRemoteCommit) | **Post** /v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId} | Get a remote commit
+[**ListRemoteCommits**](RemotesApi.md#ListRemoteCommits) | **Post** /v1/repositories/{repositoryName}/remotes/{remoteName}/commits | List remote commits
 [**ListRemotes**](RemotesApi.md#ListRemotes) | **Get** /v1/repositories/{repositoryName}/remotes | Get list of remotes
 [**UpdateRemote**](RemotesApi.md#UpdateRemote) | **Post** /v1/repositories/{repositoryName}/remotes/{remoteName} | Update remote information
 
@@ -226,9 +226,11 @@ No authorization required
 
 ## GetRemoteCommit
 
-> Commit GetRemoteCommit(ctx, repositoryName, remoteName, commitId).DatadatdatRemoteParameters(datadatdatRemoteParameters).Execute()
+> Commit GetRemoteCommit(ctx, repositoryName, remoteName, commitId).RemoteParameters(remoteParameters).Execute()
 
 Get a remote commit
+
+
 
 ### Example
 
@@ -246,11 +248,11 @@ func main() {
 	repositoryName := "repositoryName_example" // string | Name of the repository
 	remoteName := "remoteName_example" // string | Name of the remote
 	commitId := "commitId_example" // string | Commit identifier
-	datadatdatRemoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Remote-specific parameters
+	remoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Provider-specific parameters used to reach the remote
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.RemotesApi.GetRemoteCommit(context.Background(), repositoryName, remoteName, commitId).DatadatdatRemoteParameters(datadatdatRemoteParameters).Execute()
+	resp, r, err := apiClient.RemotesApi.GetRemoteCommit(context.Background(), repositoryName, remoteName, commitId).RemoteParameters(remoteParameters).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.GetRemoteCommit``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -280,7 +282,7 @@ Name | Type | Description  | Notes
 
 
 
- **datadatdatRemoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Remote-specific parameters | 
+ **remoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Provider-specific parameters used to reach the remote | 
 
 ### Return type
 
@@ -292,7 +294,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
@@ -302,9 +304,11 @@ No authorization required
 
 ## ListRemoteCommits
 
-> []Commit ListRemoteCommits(ctx, repositoryName, remoteName).DatadatdatRemoteParameters(datadatdatRemoteParameters).Tag(tag).Execute()
+> []Commit ListRemoteCommits(ctx, repositoryName, remoteName).RemoteParameters(remoteParameters).Tag(tag).Execute()
 
 List remote commits
+
+
 
 ### Example
 
@@ -321,12 +325,12 @@ import (
 func main() {
 	repositoryName := "repositoryName_example" // string | Name of the repository
 	remoteName := "remoteName_example" // string | Name of the remote
-	datadatdatRemoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Remote-specific parameters
+	remoteParameters := *openapiclient.NewRemoteParameters("Provider_example", map[string]interface{}(123)) // RemoteParameters | Provider-specific parameters used to reach the remote
 	tag := []string{"Inner_example"} // []string | Tags (name or name=value) to search for (optional)
 
 	configuration := openapiclient.NewConfiguration()
 	apiClient := openapiclient.NewAPIClient(configuration)
-	resp, r, err := apiClient.RemotesApi.ListRemoteCommits(context.Background(), repositoryName, remoteName).DatadatdatRemoteParameters(datadatdatRemoteParameters).Tag(tag).Execute()
+	resp, r, err := apiClient.RemotesApi.ListRemoteCommits(context.Background(), repositoryName, remoteName).RemoteParameters(remoteParameters).Tag(tag).Execute()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error when calling `RemotesApi.ListRemoteCommits``: %v\n", err)
 		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
@@ -354,7 +358,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 
 
- **datadatdatRemoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Remote-specific parameters | 
+ **remoteParameters** | [**RemoteParameters**](RemoteParameters.md) | Provider-specific parameters used to reach the remote | 
  **tag** | **[]string** | Tags (name or name&#x3D;value) to search for | 
 
 ### Return type
@@ -367,7 +371,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
