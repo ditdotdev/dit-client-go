@@ -217,46 +217,147 @@ func TestDeleteRemote_NotFound(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
-// ListRemoteCommits / GetRemoteCommit
+// ListRemoteCommits
 //
-// These two operations take Datadatdat-remote-parameters as a complex object
-// header (in: header, schema: $ref RemoteParameters). The v7 generator
-// encodes objects-in-headers using bracketed key names (e.g.
-// "Datadatdat-remote-parameters[provider]"), which Go's net/http rejects as
-// an invalid header field name. This is a genuine bug we need to resolve —
-// either by changing the spec to encode remoteParameters as a JSON string or
-// in the request body, or by patching the generator's header encoding for
-// complex types.
-//
-// Until that's resolved (tracked in a follow-up issue), the only well-defined
-// behavior we can test is that calling Execute() without the required
-// DatadatdatRemoteParameters builder method returns the documented error.
+// Post-#37: this is a POST that carries RemoteParameters in the request body
+// instead of the original GET-with-object-header design that the v7
+// generator couldn't encode without producing invalid HTTP header names.
 // ---------------------------------------------------------------------------
 
-func TestListRemoteCommits_MissingRequiredHeader(t *testing.T) {
+func TestListRemoteCommits_Success(t *testing.T) {
+	want := []Commit{{Id: "remote-1", Properties: map[string]interface{}{}}}
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("expected POST, got %s", r.Method)
+		}
+		if !strings.HasSuffix(r.URL.Path, "/v1/repositories/alpha/remotes/main/commits") {
+			t.Errorf("unexpected path: %s", r.URL.Path)
+		}
+		if ct := r.Header.Get("Content-Type"); !strings.Contains(ct, "application/json") {
+			t.Errorf("expected application/json Content-Type, got %q", ct)
+		}
+		var got RemoteParameters
+		if err := json.NewDecoder(r.Body).Decode(&got); err != nil {
+			t.Fatalf("failed to decode body: %v", err)
+		}
+		if got.Provider != "s3" {
+			t.Errorf("expected provider s3 in body, got %q", got.Provider)
+		}
+		if q := r.URL.Query()["tag"]; len(q) != 1 || q[0] != "v1" {
+			t.Errorf("expected tag=v1 query param, got %v", q)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(want)
+	})
+	defer ts.Close()
+
+	got, _, err := client.RemotesApi.ListRemoteCommits(context.Background(), "alpha", "main").
+		RemoteParameters(RemoteParameters{Provider: "s3", Properties: map[string]interface{}{}}).
+		Tag([]string{"v1"}).
+		Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(got) != 1 || got[0].Id != "remote-1" {
+		t.Errorf("unexpected commits: %+v", got)
+	}
+}
+
+func TestListRemoteCommits_BadRequest(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		_ = json.NewEncoder(w).Encode(ApiError{Message: "bad params"})
+	})
+	defer ts.Close()
+
+	_, resp, err := client.RemotesApi.ListRemoteCommits(context.Background(), "alpha", "main").
+		RemoteParameters(RemoteParameters{Provider: "s3", Properties: map[string]interface{}{}}).
+		Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if resp.StatusCode != 400 {
+		t.Errorf("expected 400, got %d", resp.StatusCode)
+	}
+}
+
+func TestListRemoteCommits_MissingRequiredBody(t *testing.T) {
 	cfg := NewConfiguration()
 	cfg.Servers = ServerConfigurations{{URL: "http://127.0.0.1:0"}}
 	client := NewAPIClient(cfg)
 
 	_, _, err := client.RemotesApi.ListRemoteCommits(context.Background(), "alpha", "main").Execute()
 	if err == nil {
-		t.Fatal("expected error when DatadatdatRemoteParameters is missing")
+		t.Fatal("expected error when RemoteParameters is missing")
 	}
-	if !strings.Contains(err.Error(), "datadatdatRemoteParameters is required") {
+	if !strings.Contains(err.Error(), "remoteParameters is required") {
 		t.Errorf("unexpected error text: %q", err.Error())
 	}
 }
 
-func TestGetRemoteCommit_MissingRequiredHeader(t *testing.T) {
+// ---------------------------------------------------------------------------
+// GetRemoteCommit
+// ---------------------------------------------------------------------------
+
+func TestGetRemoteCommit_Success(t *testing.T) {
+	want := Commit{Id: "abc123", Properties: map[string]interface{}{}}
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodPost {
+			t.Errorf("expected POST, got %s", r.Method)
+		}
+		var got RemoteParameters
+		if err := json.NewDecoder(r.Body).Decode(&got); err != nil {
+			t.Fatalf("failed to decode body: %v", err)
+		}
+		if got.Provider != "s3" {
+			t.Errorf("expected provider s3 in body, got %q", got.Provider)
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(want)
+	})
+	defer ts.Close()
+
+	got, _, err := client.RemotesApi.GetRemoteCommit(context.Background(), "alpha", "main", "abc123").
+		RemoteParameters(RemoteParameters{Provider: "s3", Properties: map[string]interface{}{}}).
+		Execute()
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got.Id != "abc123" {
+		t.Errorf("expected abc123, got %q", got.Id)
+	}
+}
+
+func TestGetRemoteCommit_NotFound(t *testing.T) {
+	ts, client := newTestServer(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusNotFound)
+		_ = json.NewEncoder(w).Encode(ApiError{Message: "missing"})
+	})
+	defer ts.Close()
+
+	_, resp, err := client.RemotesApi.GetRemoteCommit(context.Background(), "alpha", "main", "ghost").
+		RemoteParameters(RemoteParameters{Provider: "s3", Properties: map[string]interface{}{}}).
+		Execute()
+	if err == nil {
+		t.Fatal("expected error")
+	}
+	if resp.StatusCode != 404 {
+		t.Errorf("expected 404, got %d", resp.StatusCode)
+	}
+}
+
+func TestGetRemoteCommit_MissingRequiredBody(t *testing.T) {
 	cfg := NewConfiguration()
 	cfg.Servers = ServerConfigurations{{URL: "http://127.0.0.1:0"}}
 	client := NewAPIClient(cfg)
 
 	_, _, err := client.RemotesApi.GetRemoteCommit(context.Background(), "alpha", "main", "abc").Execute()
 	if err == nil {
-		t.Fatal("expected error when DatadatdatRemoteParameters is missing")
+		t.Fatal("expected error when RemoteParameters is missing")
 	}
-	if !strings.Contains(err.Error(), "datadatdatRemoteParameters is required") {
+	if !strings.Contains(err.Error(), "remoteParameters is required") {
 		t.Errorf("unexpected error text: %q", err.Error())
 	}
 }
