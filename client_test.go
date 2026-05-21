@@ -3,7 +3,6 @@ package datadatdatclient
 import (
 	"bytes"
 	"net/http"
-	"net/url"
 	"strings"
 	"testing"
 	"time"
@@ -13,7 +12,6 @@ const (
 	testContentTypeJSON     = "application/json"
 	testContentTypeJSONUTF8 = "application/json; charset=utf-8"
 	testContentTypePlain    = "text/plain; charset=utf-8"
-	testStringHello         = "hello"
 )
 
 // ---------------------------------------------------------------------------
@@ -109,72 +107,27 @@ func TestContains_EmptySlice(t *testing.T) {
 }
 
 // ---------------------------------------------------------------------------
-// parameterToString
+// parameterValueToString
 // ---------------------------------------------------------------------------
 
-func TestParameterToString_StringValue(t *testing.T) {
-	got := parameterToString("hello", "")
-	if got != testStringHello {
+func TestParameterValueToString_StringValue(t *testing.T) {
+	got := parameterValueToString("hello", "key")
+	if got != "hello" {
 		t.Errorf("expected hello, got %q", got)
 	}
 }
 
-func TestParameterToString_IntValue(t *testing.T) {
-	got := parameterToString(42, "")
+func TestParameterValueToString_IntValue(t *testing.T) {
+	got := parameterValueToString(42, "key")
 	if got != "42" {
 		t.Errorf("expected 42, got %q", got)
 	}
 }
 
-func TestParameterToString_BoolValue(t *testing.T) {
-	got := parameterToString(true, "")
+func TestParameterValueToString_BoolValue(t *testing.T) {
+	got := parameterValueToString(true, "key")
 	if got != "true" {
 		t.Errorf("expected true, got %q", got)
-	}
-}
-
-func TestParameterToString_TimeValue(t *testing.T) {
-	ts := time.Date(2025, 1, 15, 12, 0, 0, 0, time.UTC)
-	got := parameterToString(ts, "")
-	if got != "2025-01-15T12:00:00Z" {
-		t.Errorf("expected RFC3339 time, got %q", got)
-	}
-}
-
-func TestParameterToString_SliceCSV(t *testing.T) {
-	got := parameterToString([]string{"a", "b", "c"}, "csv")
-	if got != "a,b,c" {
-		t.Errorf("expected a,b,c, got %q", got)
-	}
-}
-
-func TestParameterToString_SliceSSV(t *testing.T) {
-	got := parameterToString([]string{"a", "b", "c"}, "ssv")
-	if got != "a b c" {
-		t.Errorf("expected 'a b c', got %q", got)
-	}
-}
-
-func TestParameterToString_SliceTSV(t *testing.T) {
-	got := parameterToString([]string{"a", "b", "c"}, "tsv")
-	if got != "a\tb\tc" {
-		t.Errorf("expected tab-separated, got %q", got)
-	}
-}
-
-func TestParameterToString_SlicePipes(t *testing.T) {
-	got := parameterToString([]string{"a", "b", "c"}, "pipes")
-	if got != "a|b|c" {
-		t.Errorf("expected pipe-separated, got %q", got)
-	}
-}
-
-func TestParameterToString_SliceDefaultDelimiter(t *testing.T) {
-	// Without a recognized collection format, the delimiter is empty string.
-	// ReplaceAll replaces spaces with "", so "[a b]" becomes "[ab]", trimmed to "ab".
-	got := parameterToString([]string{"a", "b"}, "")
-	if got != "ab" {
-		t.Errorf("expected 'ab', got %q", got)
 	}
 }
 
@@ -249,7 +202,6 @@ func TestDetectContentType_String(t *testing.T) {
 
 func TestDetectContentType_ByteSlice(t *testing.T) {
 	got := detectContentType([]byte("<html></html>"))
-	// http.DetectContentType will return text/html
 	if !strings.Contains(got, "text/html") {
 		t.Errorf("expected text/html for HTML bytes, got %q", got)
 	}
@@ -324,7 +276,6 @@ func TestCacheExpires_WithMaxAge(t *testing.T) {
 	resp := &http.Response{Header: h}
 	expires := CacheExpires(resp)
 
-	// The expires time should be approximately now + 60 seconds
 	expected := now.Add(60 * time.Second)
 	diff := expires.Sub(expected)
 	if diff < -2*time.Second || diff > 2*time.Second {
@@ -356,7 +307,6 @@ func TestCacheExpires_NoDateHeader(t *testing.T) {
 	expires := CacheExpires(resp)
 	after := time.Now()
 
-	// When Date header is missing, should return approximately time.Now()
 	if expires.Before(before.Add(-time.Second)) || expires.After(after.Add(time.Second)) {
 		t.Errorf("expected expires near now, got %v", expires)
 	}
@@ -371,64 +321,9 @@ func TestCacheExpires_InvalidMaxAge(t *testing.T) {
 	resp := &http.Response{Header: h}
 	expires := CacheExpires(resp)
 
-	// With invalid max-age, expires should be set to the parsed "now" from Date header
 	diff := expires.Sub(now)
 	if diff < -2*time.Second || diff > 2*time.Second {
 		t.Errorf("expected expires near date header time, got %v (diff: %v)", expires, diff)
-	}
-}
-
-// ---------------------------------------------------------------------------
-// shouldUseMultipart
-// ---------------------------------------------------------------------------
-
-func TestShouldUseMultipart_WithMultipartAndFormParams(t *testing.T) {
-	client := NewAPIClient(NewConfiguration())
-	headers := map[string]string{"Content-Type": "multipart/form-data"}
-	formParams := url.Values{"field": {"value"}}
-
-	if !client.shouldUseMultipart(headers, formParams, nil, "") {
-		t.Error("expected true when Content-Type is multipart and form params present")
-	}
-}
-
-func TestShouldUseMultipart_WithFileBytes(t *testing.T) {
-	client := NewAPIClient(NewConfiguration())
-	headers := map[string]string{}
-	formParams := url.Values{}
-
-	if !client.shouldUseMultipart(headers, formParams, []byte("data"), "file.txt") {
-		t.Error("expected true when file bytes and filename are present")
-	}
-}
-
-func TestShouldUseMultipart_False(t *testing.T) {
-	client := NewAPIClient(NewConfiguration())
-	headers := map[string]string{"Content-Type": "application/json"}
-	formParams := url.Values{}
-
-	if client.shouldUseMultipart(headers, formParams, nil, "") {
-		t.Error("expected false when not multipart and no file")
-	}
-}
-
-func TestShouldUseMultipart_MultipartButNoFormParams(t *testing.T) {
-	client := NewAPIClient(NewConfiguration())
-	headers := map[string]string{"Content-Type": "multipart/form-data"}
-	formParams := url.Values{}
-
-	if client.shouldUseMultipart(headers, formParams, nil, "") {
-		t.Error("expected false when multipart but no form params and no file")
-	}
-}
-
-func TestShouldUseMultipart_FileBytesButNoName(t *testing.T) {
-	client := NewAPIClient(NewConfiguration())
-	headers := map[string]string{}
-	formParams := url.Values{}
-
-	if client.shouldUseMultipart(headers, formParams, []byte("data"), "") {
-		t.Error("expected false when file bytes present but no filename")
 	}
 }
 
@@ -505,7 +400,6 @@ func TestSetBody_XMLStruct(t *testing.T) {
 }
 
 func TestSetBody_UnsupportedContentType(t *testing.T) {
-	// An integer with an unsupported content type should produce an error
 	_, err := setBody(42, "application/octet-stream")
 	if err == nil {
 		t.Error("expected error for unsupported body type, got nil")
@@ -539,14 +433,14 @@ func TestGenericOpenAPIError_BodyNil(t *testing.T) {
 }
 
 func TestGenericOpenAPIError_Model(t *testing.T) {
-	model := ApiError{Code: "NOT_FOUND", Message: "not found"}
+	model := ApiError{Code: PtrString("NOT_FOUND"), Message: "not found"}
 	e := GenericOpenAPIError{model: model}
 	got, ok := e.Model().(ApiError)
 	if !ok {
 		t.Fatal("expected model to be ApiError")
 	}
-	if got.Code != "NOT_FOUND" {
-		t.Errorf("expected code NOT_FOUND, got %q", got.Code)
+	if got.GetCode() != "NOT_FOUND" {
+		t.Errorf("expected code NOT_FOUND, got %q", got.GetCode())
 	}
 }
 
@@ -606,15 +500,6 @@ func TestNewAPIClient_ServicesInitialized(t *testing.T) {
 	}
 	if client.VolumesApi == nil {
 		t.Error("VolumesApi should be initialized")
-	}
-}
-
-func TestNewAPIClient_ChangeBasePath(t *testing.T) {
-	cfg := NewConfiguration()
-	client := NewAPIClient(cfg)
-	client.ChangeBasePath("http://example.com:9090")
-	if client.GetConfig().BasePath != "http://example.com:9090" {
-		t.Errorf("expected changed base path, got %q", client.GetConfig().BasePath)
 	}
 }
 

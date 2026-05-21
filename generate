@@ -4,10 +4,12 @@ set -euo pipefail
 # Pin to a specific openapi-generator-cli version so regenerations are reproducible.
 # v7.22.0 is the latest stable as of this upgrade (https://hub.docker.com/r/openapitools/openapi-generator-cli/tags).
 #
-# Custom mustache templates live under templates/. Keep them MINIMAL —
-# every override is a maintenance liability when the generator's stock
-# templates evolve. See chore/upgrade-openapi-generator-v7 PR for the
-# audit + re-derivation that produced the current set.
+# We deliberately use the stock upstream Go templates (no `-t templates`).
+# Maintaining local mustache overrides is a perpetual liability that drifts
+# from upstream; the re-derivation in chore/rederive-v7-templates confirmed
+# the previous local overrides were essentially v4-era patches that are
+# either already correct in stock v7 or unnecessary. Settings that need to
+# differ from stock are passed via --additional-properties instead.
 
 # Step 1: generate via the openapi-generator container.
 #
@@ -16,17 +18,24 @@ set -euo pipefail
 # toolchain, so any GO_POST_PROCESS_FILE invocation inside the container
 # fails with "Cannot run program /usr/local/bin/gofmt". We run gofmt on
 # the host after generation instead — see step 2.
+#
+# --additional-properties notes:
+#   packageName: our Go module's package name (default would be `openapi`).
+#   withGoCodegenComment=true: emit the `// Code generated ... DO NOT EDIT.`
+#     marker on every file so linters/coverage tools recognize them as generated.
+#   apiNameSuffix=Api: preserve the consumer-facing field names CommitsApi,
+#     RemotesApi, etc. v7's default produces uppercase `API`, which would be
+#     a consumer-breaking rename without this property.
 docker run --rm -v ${PWD}:/local \
     openapitools/openapi-generator-cli:v7.22.0 \
-    generate -i /local/datadatdat.yml -g go -o /local -t /local/templates \
+    generate -i /local/datadatdat.yml -g go -o /local \
     --additional-properties=packageName=datadatdatclient,withGoCodegenComment=true,apiNameSuffix=Api \
     --git-user-id=datadatdat --git-repo-id=datadatdat-client-go
 
 # Step 2: gofmt the emitted Go files on the host.
 # The repo's Code Quality CI runs `gofmt -s -l .` and fails on any output,
-# so emitted code MUST be gofmt-clean before we commit it.
-#
-# Templates emit modern Go doc-comment style ("  - @param") to avoid the
-# non-idempotent gofmt migration from v4-era " * @param" style that would
-# otherwise require running gofmt twice.
+# so emitted code MUST be gofmt-clean before we commit it. Stock v7 templates
+# emit modern doc-comment style and are gofmt-clean as of v7.22.0, but we
+# run this defensively in case future upstream changes add a non-idempotent
+# format on a single pass.
 gofmt -s -w .
