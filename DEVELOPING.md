@@ -28,6 +28,53 @@ If a future generator upgrade emits something unacceptable, the right fix is to 
 upstream, or (b) add a single targeted override under a fresh `templates/` directory. Avoid wholesale
 template copies — they go stale and turn the next generator upgrade into archaeology.
 
+## Production-Safe Defaults
+
+The stock openapi-generator output ships with two latent issues that consumers should be aware of.
+This package adds hand-written helpers in [`safe_defaults.go`](safe_defaults.go) that work around
+them without re-introducing local mustache template overrides.
+
+### HTTP client timeout
+
+`NewAPIClient` assigns `http.DefaultClient` when `cfg.HTTPClient` is nil. That is a process-wide
+singleton with no `Timeout`; a hung server hangs the calling goroutine indefinitely, and any
+mutation of `http.DefaultClient` leaks into every other package in the process.
+
+Use `NewAPIClientWithDefaults` to get a non-shared `*http.Client` with a generous default
+timeout, or pass your own `cfg.HTTPClient` for finer control:
+
+```go
+cfg := datadatdatclient.NewConfiguration()
+// Use the safer constructor — fresh *http.Client, 5 minute timeout.
+client := datadatdatclient.NewAPIClientWithDefaults(cfg)
+
+// Or supply your own client.
+cfg.HTTPClient = &http.Client{Timeout: 10 * time.Second}
+client = datadatdatclient.NewAPIClient(cfg)
+```
+
+See [issue #32](https://github.com/datadatdat/datadatdat-client-go/issues/32).
+
+### Default headers and concurrency
+
+`Configuration.DefaultHeader` is an unguarded `map[string]string`. The generated `AddDefaultHeader`
+writes it without a lock, and the generated request-prepare path iterates it on every request.
+Mutating headers from a goroutine while requests are in flight will trip Go's race detector and
+may panic with "concurrent map iteration and map write".
+
+The robust pattern is to **set headers once at init**, before constructing the API client:
+
+```go
+cfg := datadatdatclient.NewConfiguration()
+datadatdatclient.SetDefaultHeader(cfg, "X-Tenant", tenantID)
+client := datadatdatclient.NewAPIClientWithDefaults(cfg)
+```
+
+If you must mutate headers later (e.g. a token-refresh goroutine), use `SetDefaultHeader` and
+`DefaultHeaders` from this package — they share a global RWMutex so writes don't race with each
+other. **They do not fully protect against the generated iteration**; the upstream fix is tracked
+in [issue #31](https://github.com/datadatdat/datadatdat-client-go/issues/31).
+
 ## Using the Generated Client
 
 The v7 generator emits a fluent request-builder API. Each operation returns a request type that
