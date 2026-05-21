@@ -1038,7 +1038,12 @@ paths:
       tags:
       - remotes
   /v1/repositories/{repositoryName}/remotes/{remoteName}/commits:
-    get:
+    post:
+      description: |
+        Lists the commits available on a remote. Despite being a read
+        operation, this uses POST because the remote-specific connection
+        parameters (credentials, region, etc.) are passed in the request
+        body to avoid encoding a complex object in headers or query strings.
       operationId: listRemoteCommits
       parameters:
       - description: Name of the repository
@@ -1057,14 +1062,6 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Remote-specific parameters
-        explode: false
-        in: header
-        name: Datadatdat-remote-parameters
-        required: true
-        schema:
-          $ref: "#/components/schemas/remoteParameters"
-        style: simple
       - description: Tags (name or name=value) to search for
         explode: true
         in: query
@@ -1075,6 +1072,13 @@ paths:
             type: string
           type: array
         style: form
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/remoteParameters"
+        description: Provider-specific parameters used to reach the remote
+        required: true
       responses:
         "200":
           content:
@@ -1106,7 +1110,11 @@ paths:
       tags:
       - remotes
   /v1/repositories/{repositoryName}/remotes/{remoteName}/commits/{commitId}:
-    get:
+    post:
+      description: |
+        Fetches a single commit from a remote. Uses POST for the same
+        reason as listRemoteCommits: the remote connection parameters
+        travel in the request body.
       operationId: getRemoteCommit
       parameters:
       - description: Name of the repository
@@ -1133,14 +1141,13 @@ paths:
         schema:
           type: string
         style: simple
-      - description: Remote-specific parameters
-        explode: false
-        in: header
-        name: Datadatdat-remote-parameters
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/remoteParameters"
+        description: Provider-specific parameters used to reach the remote
         required: true
-        schema:
-          $ref: "#/components/schemas/remoteParameters"
-        style: simple
       responses:
         "200":
           content:
@@ -1494,15 +1501,6 @@ components:
       required: true
       schema:
         type: string
-      style: simple
-    remoteParameters:
-      description: Remote-specific parameters
-      explode: false
-      in: header
-      name: Datadatdat-remote-parameters
-      required: true
-      schema:
-        $ref: "#/components/schemas/remoteParameters"
       style: simple
     tagQuery:
       description: Tags (name or name=value) to search for

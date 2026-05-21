@@ -406,17 +406,17 @@ func (a *RemotesApiService) GetRemoteExecute(r ApiGetRemoteRequest) (*Remote, *h
 }
 
 type ApiGetRemoteCommitRequest struct {
-	ctx                        context.Context
-	ApiService                 *RemotesApiService
-	repositoryName             string
-	remoteName                 string
-	commitId                   string
-	datadatdatRemoteParameters *RemoteParameters
+	ctx              context.Context
+	ApiService       *RemotesApiService
+	repositoryName   string
+	remoteName       string
+	commitId         string
+	remoteParameters *RemoteParameters
 }
 
-// Remote-specific parameters
-func (r ApiGetRemoteCommitRequest) DatadatdatRemoteParameters(datadatdatRemoteParameters RemoteParameters) ApiGetRemoteCommitRequest {
-	r.datadatdatRemoteParameters = &datadatdatRemoteParameters
+// Provider-specific parameters used to reach the remote
+func (r ApiGetRemoteCommitRequest) RemoteParameters(remoteParameters RemoteParameters) ApiGetRemoteCommitRequest {
+	r.remoteParameters = &remoteParameters
 	return r
 }
 
@@ -426,6 +426,10 @@ func (r ApiGetRemoteCommitRequest) Execute() (*Commit, *http.Response, error) {
 
 /*
 GetRemoteCommit Get a remote commit
+
+Fetches a single commit from a remote. Uses POST for the same
+reason as listRemoteCommits: the remote connection parameters
+travel in the request body.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param repositoryName Name of the repository
@@ -448,7 +452,7 @@ func (a *RemotesApiService) GetRemoteCommit(ctx context.Context, repositoryName 
 //	@return Commit
 func (a *RemotesApiService) GetRemoteCommitExecute(r ApiGetRemoteCommitRequest) (*Commit, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
+		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
 		localVarReturnValue *Commit
@@ -467,12 +471,12 @@ func (a *RemotesApiService) GetRemoteCommitExecute(r ApiGetRemoteCommitRequest) 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.datadatdatRemoteParameters == nil {
-		return localVarReturnValue, nil, reportError("datadatdatRemoteParameters is required and must be specified")
+	if r.remoteParameters == nil {
+		return localVarReturnValue, nil, reportError("remoteParameters is required and must be specified")
 	}
 
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -488,7 +492,8 @@ func (a *RemotesApiService) GetRemoteCommitExecute(r ApiGetRemoteCommitRequest) 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	parameterAddToHeaderOrQuery(localVarHeaderParams, "Datadatdat-remote-parameters", r.datadatdatRemoteParameters, "simple", "")
+	// body params
+	localVarPostBody = r.remoteParameters
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -557,17 +562,17 @@ func (a *RemotesApiService) GetRemoteCommitExecute(r ApiGetRemoteCommitRequest) 
 }
 
 type ApiListRemoteCommitsRequest struct {
-	ctx                        context.Context
-	ApiService                 *RemotesApiService
-	repositoryName             string
-	remoteName                 string
-	datadatdatRemoteParameters *RemoteParameters
-	tag                        *[]string
+	ctx              context.Context
+	ApiService       *RemotesApiService
+	repositoryName   string
+	remoteName       string
+	remoteParameters *RemoteParameters
+	tag              *[]string
 }
 
-// Remote-specific parameters
-func (r ApiListRemoteCommitsRequest) DatadatdatRemoteParameters(datadatdatRemoteParameters RemoteParameters) ApiListRemoteCommitsRequest {
-	r.datadatdatRemoteParameters = &datadatdatRemoteParameters
+// Provider-specific parameters used to reach the remote
+func (r ApiListRemoteCommitsRequest) RemoteParameters(remoteParameters RemoteParameters) ApiListRemoteCommitsRequest {
+	r.remoteParameters = &remoteParameters
 	return r
 }
 
@@ -583,6 +588,11 @@ func (r ApiListRemoteCommitsRequest) Execute() ([]Commit, *http.Response, error)
 
 /*
 ListRemoteCommits List remote commits
+
+Lists the commits available on a remote. Despite being a read
+operation, this uses POST because the remote-specific connection
+parameters (credentials, region, etc.) are passed in the request
+body to avoid encoding a complex object in headers or query strings.
 
 	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
 	@param repositoryName Name of the repository
@@ -603,7 +613,7 @@ func (a *RemotesApiService) ListRemoteCommits(ctx context.Context, repositoryNam
 //	@return []Commit
 func (a *RemotesApiService) ListRemoteCommitsExecute(r ApiListRemoteCommitsRequest) ([]Commit, *http.Response, error) {
 	var (
-		localVarHTTPMethod  = http.MethodGet
+		localVarHTTPMethod  = http.MethodPost
 		localVarPostBody    interface{}
 		formFiles           []formFile
 		localVarReturnValue []Commit
@@ -621,8 +631,8 @@ func (a *RemotesApiService) ListRemoteCommitsExecute(r ApiListRemoteCommitsReque
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
-	if r.datadatdatRemoteParameters == nil {
-		return localVarReturnValue, nil, reportError("datadatdatRemoteParameters is required and must be specified")
+	if r.remoteParameters == nil {
+		return localVarReturnValue, nil, reportError("remoteParameters is required and must be specified")
 	}
 
 	if r.tag != nil {
@@ -637,7 +647,7 @@ func (a *RemotesApiService) ListRemoteCommitsExecute(r ApiListRemoteCommitsReque
 		}
 	}
 	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{}
+	localVarHTTPContentTypes := []string{"application/json"}
 
 	// set Content-Type header
 	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
@@ -653,7 +663,8 @@ func (a *RemotesApiService) ListRemoteCommitsExecute(r ApiListRemoteCommitsReque
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	parameterAddToHeaderOrQuery(localVarHeaderParams, "Datadatdat-remote-parameters", r.datadatdatRemoteParameters, "simple", "")
+	// body params
+	localVarPostBody = r.remoteParameters
 	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
