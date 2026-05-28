@@ -36,3 +36,6 @@ _testmain.go
 coverage.out
 coverage.html
 .claude/
+
+# Coverage profiles from local test runs (cov.out, cov-utils.out, etc.)
+cov*.out
