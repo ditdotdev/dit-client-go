@@ -36,3 +36,7 @@ _testmain.go
 coverage.out
 coverage.html
 .claude/
+
+# Coverage profiles from local test runs (Go default name varies
+# between `cov.out`, `cov-utils.out`, etc. depending on the recipe)
+cov*.out
