@@ -28,9 +28,9 @@ set -euo pipefail
 #     a consumer-breaking rename without this property.
 docker run --rm -v ${PWD}:/local \
     openapitools/openapi-generator-cli:v7.22.0 \
-    generate -i /local/datadatdat.yml -g go -o /local \
-    --additional-properties=packageName=datadatdatclient,withGoCodegenComment=true,apiNameSuffix=Api \
-    --git-user-id=datadatdat --git-repo-id=datadatdat-client-go
+    generate -i /local/dit.yml -g go -o /local \
+    --additional-properties=packageName=ditclient,withGoCodegenComment=true,apiNameSuffix=Api \
+    --git-user-id=ditdotdev --git-repo-id=dit-client-go
 
 # Step 2: gofmt the emitted Go files on the host.
 # The repo's Code Quality CI runs `gofmt -s -l .` and fails on any output,
