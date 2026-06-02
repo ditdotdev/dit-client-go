@@ -1,4 +1,4 @@
-package datadatdatclient
+package ditclient
 
 import "testing"
 

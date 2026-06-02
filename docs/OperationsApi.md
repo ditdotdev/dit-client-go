@@ -28,7 +28,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/datadatdat/datadatdat-client-go"
+	openapiclient "github.com/ditdotdev/dit-client-go"
 )
 
 func main() {
@@ -94,7 +94,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/datadatdat/datadatdat-client-go"
+	openapiclient "github.com/ditdotdev/dit-client-go"
 )
 
 func main() {
@@ -162,7 +162,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/datadatdat/datadatdat-client-go"
+	openapiclient "github.com/ditdotdev/dit-client-go"
 )
 
 func main() {
@@ -232,7 +232,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/datadatdat/datadatdat-client-go"
+	openapiclient "github.com/ditdotdev/dit-client-go"
 )
 
 func main() {
@@ -296,7 +296,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/datadatdat/datadatdat-client-go"
+	openapiclient "github.com/ditdotdev/dit-client-go"
 )
 
 func main() {
@@ -374,7 +374,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	openapiclient "github.com/datadatdat/datadatdat-client-go"
+	openapiclient "github.com/ditdotdev/dit-client-go"
 )
 
 func main() {
