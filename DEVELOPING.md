@@ -1,17 +1,17 @@
 # Project Development
 
 For general information about contributing changes, see the
-[Contributor Guidelines](https://github.com/datadatdat/.github/blob/master/CONTRIBUTING.md).
+[Contributor Guidelines](https://github.com/ditdotdev/.github/blob/master/CONTRIBUTING.md).
 
 ## How it Works
 
-The Go client is generated from `datadatdat.yml` by [openapi-generator-cli](https://openapi-generator.tech/),
+The Go client is generated from `dit.yml` by [openapi-generator-cli](https://openapi-generator.tech/),
 pinned to **v7.22.0** in the `generate` script. The generated files are committed to the repository so
 they can be imported as a Go module without consumers needing the generator tooling.
 
 To regenerate after spec changes:
 
-1. Update `datadatdat.yml` with the new specification.
+1. Update `dit.yml` with the new specification.
 2. Run `./generate`. This requires Docker (the script runs the openapi-generator container).
 3. If the new spec removes models or operations, manually `git rm` the corresponding `model_*.go` /
    `api_*.go` files — the generator does not delete stale files on its own.
@@ -44,16 +44,16 @@ Use `NewAPIClientWithDefaults` to get a non-shared `*http.Client` with a generou
 timeout, or pass your own `cfg.HTTPClient` for finer control:
 
 ```go
-cfg := datadatdatclient.NewConfiguration()
+cfg := ditclient.NewConfiguration()
 // Use the safer constructor — fresh *http.Client, 5 minute timeout.
-client := datadatdatclient.NewAPIClientWithDefaults(cfg)
+client := ditclient.NewAPIClientWithDefaults(cfg)
 
 // Or supply your own client.
 cfg.HTTPClient = &http.Client{Timeout: 10 * time.Second}
-client = datadatdatclient.NewAPIClient(cfg)
+client = ditclient.NewAPIClient(cfg)
 ```
 
-See [issue #32](https://github.com/datadatdat/datadatdat-client-go/issues/32).
+See [issue #32](https://github.com/ditdotdev/dit-client-go/issues/32).
 
 ### Default headers and concurrency
 
@@ -65,15 +65,15 @@ may panic with "concurrent map iteration and map write".
 The robust pattern is to **set headers once at init**, before constructing the API client:
 
 ```go
-cfg := datadatdatclient.NewConfiguration()
-datadatdatclient.SetDefaultHeader(cfg, "X-Tenant", tenantID)
-client := datadatdatclient.NewAPIClientWithDefaults(cfg)
+cfg := ditclient.NewConfiguration()
+ditclient.SetDefaultHeader(cfg, "X-Tenant", tenantID)
+client := ditclient.NewAPIClientWithDefaults(cfg)
 ```
 
 If you must mutate headers later (e.g. a token-refresh goroutine), use `SetDefaultHeader` and
 `DefaultHeaders` from this package — they share a global RWMutex so writes don't race with each
 other. **They do not fully protect against the generated iteration**; the upstream fix is tracked
-in [issue #31](https://github.com/datadatdat/datadatdat-client-go/issues/31).
+in [issue #31](https://github.com/ditdotdev/dit-client-go/issues/31).
 
 ## Using the Generated Client
 
@@ -81,11 +81,11 @@ The v7 generator emits a fluent request-builder API. Each operation returns a re
 you can decorate with optional parameters before calling `.Execute()`:
 
 ```go
-cfg := datadatdatclient.NewConfiguration()
-cfg.Servers = datadatdatclient.ServerConfigurations{
+cfg := ditclient.NewConfiguration()
+cfg.Servers = ditclient.ServerConfigurations{
     {URL: "http://localhost:5001"},
 }
-client := datadatdatclient.NewAPIClient(cfg)
+client := ditclient.NewAPIClient(cfg)
 
 // GET with required path params only
 commit, resp, err := client.CommitsApi.
@@ -95,7 +95,7 @@ commit, resp, err := client.CommitsApi.
 // POST with a required request body
 created, resp, err := client.CommitsApi.
     CreateCommit(ctx, "myrepo").
-    Commit(datadatdatclient.Commit{Id: "new", Properties: map[string]any{}}).
+    Commit(ditclient.Commit{Id: "new", Properties: map[string]any{}}).
     Execute()
 
 // GET with optional query parameters
@@ -119,7 +119,7 @@ go test ./...
 
 Hand-written integration tests live alongside the generated code as `*_test.go` files (e.g.
 `api_commits_test.go`). They spin up an `httptest.NewServer` so we can exercise the real request
-path, body marshalling, and error-decoding behaviour without depending on a live `datadatdat-server`.
+path, body marshalling, and error-decoding behaviour without depending on a live `dit-server`.
 
 The openapi-generator also emits its own auto-stub test files at `test/api_*_test.go`. We ignore
 those via `.openapi-generator-ignore` — they wrap every operation in `t.Skip()` and only assert
@@ -135,5 +135,5 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-Consumer repos (`datadatdat`, `datadatdat-server`, `datadatdat-docker-proxy`) bump
-`github.com/datadatdat/datadatdat-client-go` in their `go.mod` after a release.
+Consumer repos (`dit`, `dit-server`, `dit-docker-proxy`) bump
+`github.com/ditdotdev/dit-client-go` in their `go.mod` after a release.

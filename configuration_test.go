@@ -1,4 +1,4 @@
-package datadatdatclient
+package ditclient
 
 import (
 	"context"
@@ -40,7 +40,7 @@ func TestNewConfiguration_ServersInitialized(t *testing.T) {
 	if cfg.Servers[0].URL != testDefaultBasePath {
 		t.Errorf("expected server URL http://localhost:5001, got %q", cfg.Servers[0].URL)
 	}
-	if cfg.Servers[0].Description != "Local Datadatdat server (default)" {
+	if cfg.Servers[0].Description != "Local Dit server (default)" {
 		t.Errorf("expected server description, got %q", cfg.Servers[0].Description)
 	}
 }

@@ -1,5 +1,5 @@
 #
-# Copyright Datadatdat.
+# Copyright Dit.
 #
 
 #
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   health:
-    uses: datadatdat/.github/.github/workflows/repo-health.yml@master
+    uses: ditdotdev/.github/.github/workflows/repo-health.yml@master
     with:
       language: go
       coverage-floor: 90
@@ -40,7 +40,7 @@ jobs:
       - name: Test
         run: go test ./...
         env:
-          GOPRIVATE: github.com/datadatdat/*
+          GOPRIVATE: github.com/ditdotdev/*
       - name: Get or Create Draft Release
         id: draft_release
         run: |
@@ -50,7 +50,7 @@ jobs:
           # Try to find existing draft release for this tag. release-drafter
           # can leave more than one draft for the same tag; head -1 keeps
           # RELEASE_ID a single line so the GITHUB_OUTPUT write stays valid
-          # key=value format (see datadatdat-client-go#44).
+          # key=value format (see dit-client-go#44).
           RELEASE_ID=$(curl -sH "Authorization: token $GITHUB_TOKEN" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" | \
             jq -rc --arg tag "$TAG_NAME" '.[] | select(.draft and .tag_name == $tag) | .id' | head -1)
