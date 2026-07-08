@@ -13,6 +13,11 @@ project {
     "**/build/**",
     ".health/**",
     "**/*.out",
+    # OpenAPI spec artifacts: dit.yml is synced from the server spec and
+    # api/openapi.yaml is generator output — both regenerate, so a header
+    # would be stripped.
+    "dit.yml",
+    "api/openapi.yaml",
     # OpenAPI-generated (regenerated from the server spec each release):
     "api_commits.go",
     "api_contexts.go",
