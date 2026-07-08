@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright Dit 2026
+# SPDX-License-Identifier: BUSL-1.1
 set -euo pipefail
 
 # Pin to a specific openapi-generator-cli version so regenerations are reproducible.
