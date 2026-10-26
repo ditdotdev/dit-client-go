@@ -25,7 +25,7 @@ on:
         default: false
 
 env:
-  GO_VERSION: '1.26.9'
+  GO_VERSION: '1.26.10'
   GOPRIVATE: github.com/ditdotdev/*
   GONOPROXY: github.com/ditdotdev/*
   GONOSUMDB: github.com/ditdotdev/*
@@ -78,8 +78,11 @@ jobs:
           #       constraining the path here would defeat the API surface.
           # G704: HTTP request from configured URL — the base behavior of any HTTP client.
           # G706: log.Printf of dump — generated debug logging, never user-facing.
-          gosec -exclude=G104,G117,G304,G704,G706 -fmt=json -out=gosec-results.json ./...
-          gosec -exclude=G104,G117,G304,G704,G706 ./...
+          # G602: contentTypes[0] in selectHeaderContentType (client.go). gosec v2.30.0
+          #       flags it as a possible out-of-range index, but the generated helper
+          #       returns early on len(contentTypes) == 0 two lines above. False positive.
+          gosec -exclude=G104,G117,G304,G704,G706,G602 -fmt=json -out=gosec-results.json ./...
+          gosec -exclude=G104,G117,G304,G704,G706,G602 ./...
 
       - name: Run Go vulnerability scanner (govulncheck)
         run: |
